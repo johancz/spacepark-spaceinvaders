@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using RestSharp;
 
 namespace SpaceInvaders
 {
@@ -25,6 +26,7 @@ namespace SpaceInvaders
                 {
                     Console.WriteLine("Who are you traveller? ");
                     string name = Console.ReadLine();
+                    Console.WriteLine();
 
                     //Method 1: Async API and loop through to see if we can find that name
                     //Method 2: Based on the person, call for another API with Async, and see which vehicles this character have + which planet he's from.
@@ -34,9 +36,9 @@ namespace SpaceInvaders
                 }
                 else if (selectedMenu == 1) //SHOWS ALL EXPENSES
                 {
-                    Console.WriteLine("Thank you for choosing SpacePark! We hope to see you soon again :)");
+                    Console.WriteLine("Thank you for choosing SpacePark! We hope to see you soon again :)\n");
                     //METHOD: Print the Invoice to the traveller. Also add the totalSum into the database.
-                    running = false;
+                    //running = false;
                 }
                 else //SHOWS EXPENSES SORTED BY CATEGORY
                 {
