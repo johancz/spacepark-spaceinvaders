@@ -1,63 +1,131 @@
 ﻿using System;
-using System.IO;
-using System.Net;
+using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 using RestSharp;
+using SpaceInvaders.Objects;
+using SpaceInvaders.Traveller;
 
 namespace SpaceInvaders
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
-            var webClient = new WebClient();
-            var api =  webClient.DownloadString(new Uri(@"https://swapi.dev/api/people/"));
 
-            using (var streamWriter = new StreamWriter(@"C:\Users\Mazdak\source\repos\Barista\spacepark-spaceinvaders\Source\SpaceInvaders\JSON\people.json"))
-            {
-                streamWriter.Write(api);
-            }
+            await FetchPeople();
+            await FetchStarships();
 
             Console.WriteLine("Welcome to SpacePark!\n");
             Thread.Sleep(1000);
 
             bool running = true;
-            while (running)
-            {
-                int selectedMenu = ShowMenu("What do you want to do?", new[]
+                while (running)
                 {
+                    int selectedMenu = ShowMenu("What do you want to do?", new[]
+                    {
                     "Register new traveller", //Index 0
                     "End current parking", //Index 1
                     "Exit program", //Index 2
                 });
-                Console.Clear();
+                    Console.Clear();
 
-                if (selectedMenu == 0) //ADD EXPENSE
-                {
-                    Console.WriteLine("Who are you traveller? ");
-                    string name = Console.ReadLine();
-                    Console.WriteLine();
+                    if (selectedMenu == 0) //ADD EXPENSE
+                    {
+                        Console.WriteLine("Who are you traveller? ");
+                        string name = Console.ReadLine();
+                        Console.WriteLine();
 
-                    //Method 1: Async API and loop through to see if we can find that name
-                    //Method 2: Based on the person, call for another API with Async, and see which vehicles this character have + which planet he's from.
-                    //Method 3: New Menu choice where the character can select his vehicle.
-                    //Method 4: IF the vehicle fits / or IF the spaceship is not full, REGiSTER the parking and att into a database.
-                    //Save the parking into a file so we can load it?
-                }
-                else if (selectedMenu == 1) //SHOWS ALL EXPENSES
-                {
-                    Console.WriteLine("Thank you for choosing SpacePark! We hope to see you soon again :)\n");
-                    //METHOD: Print the Invoice to the traveller. Also add the totalSum into the database.
-                    //running = false;
-                }
-                else //SHOWS EXPENSES SORTED BY CATEGORY
-                {
-                    Console.WriteLine("Terminating program.");
-                    running = false;
+                        //Method 1: Async API and loop through to see if we can find that name
+                        //Method 2: Based on the person, call for another API with Async, and see which vehicles this character have + which planet he's from.
+                        //Method 3: New Menu choice where the character can select his vehicle.
+                        //Method 4: IF the vehicle fits / or IF the spaceship is not full, REGiSTER the parking and att into a database.
+                        //Save the parking into a file so we can load it?
+                    }
+                    else if (selectedMenu == 1) //SHOWS ALL EXPENSES
+                    {
+                        Console.WriteLine("Thank you for choosing SpacePark! We hope to see you soon again :)\n");
+                        //METHOD: Print the Invoice to the traveller. Also add the totalSum into the database.
+                        //running = false;
+                    }
+                    else //SHOWS EXPENSES SORTED BY CATEGORY
+                    {
+                        Console.WriteLine("Terminating program.");
+                        running = false;
+                    }
                 }
             }
+
+        //API for People
+        public static async Task<APIResponse> FetchDataPeople(string requestUrl)
+        {
+            string baseUrl = "http://swapi.dev/api/";
+            string resource = requestUrl.Substring(baseUrl.Length);
+
+            var client = new RestClient("http://swapi.dev/api/");
+            var request = new RestRequest(resource, DataFormat.Json);
+            // NOTE: The Swreponse is a custom class which represents the data returned by the API, RestClient have buildin ORM which maps the data from the reponse into a given type of object
+            var response = await client.GetAsync<APIResponse>(request);
+            return response;
         }
 
+        //API for Starships
+        public static async Task<APIResponseStarships> FetchDataStarship(string requestUrl)
+        {
+            string baseUrl = "http://swapi.dev/api/";
+            string resource = requestUrl.Substring(baseUrl.Length);
+
+            var client = new RestClient("http://swapi.dev/api/");
+            var request = new RestRequest(resource, DataFormat.Json);
+            // NOTE: The Swreponse is a custom class which represents the data returned by the API, RestClient have buildin ORM which maps the data from the reponse into a given type of object
+            var response = await client.GetAsync<APIResponseStarships>(request);
+            return response;
+        }
+
+        //Fetch people from API
+        public static async Task FetchPeople()
+        {
+            //Add to class list 
+            List<Person> persons = new List<Person>();
+
+            APIResponse response;
+            string requestUrl = "http://swapi.dev/api/people/";
+
+            while (requestUrl != null)
+            {
+                response = await FetchDataPeople(requestUrl);
+                foreach (var p in response.Results)
+                {
+                    Console.WriteLine(p.Name);
+                    persons.Add(p);
+                }
+                requestUrl = response.Next;
+            }
+            Console.WriteLine();
+        }
+
+        //Fetch Starships from API
+        public static async Task FetchStarships()
+        {
+            //Add to object list 
+            List<Starships> starships = new List<Starships>();
+
+            APIResponseStarships response;
+            string requestUrl = "http://swapi.dev/api/starships/";
+
+            while (requestUrl != null)
+            {
+                response = await FetchDataStarship(requestUrl);
+                foreach (var p in response.Results)
+                {
+                    Console.WriteLine($"{p.Name}, Length: {p.Length}m");
+                    starships.Add(p);
+                }
+                requestUrl = response.Next;
+            }
+            Console.WriteLine();
+        }
+    
         public static int ShowMenu(string prompt, string[] options)
         {
             if (options == null || options.Length == 0)
@@ -111,5 +179,6 @@ namespace SpaceInvaders
             Console.CursorVisible = true;
             return selected;
         }
+
     }
 }

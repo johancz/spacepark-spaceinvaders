@@ -15,8 +15,4 @@
     </Compile>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="JSON\" />
-  </ItemGroup>
-
 </Project>
