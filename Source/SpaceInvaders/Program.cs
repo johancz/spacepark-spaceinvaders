@@ -12,9 +12,8 @@ namespace SpaceInvaders
     {
         static async Task Main(string[] args)
         {
-
-            await FetchPeople();
-            await FetchStarships();
+            var peopleList = await FetchPeople();
+            var starshipList = await FetchStarships();        
 
             Console.WriteLine("Welcome to SpacePark!\n");
             Thread.Sleep(1000);
@@ -83,7 +82,7 @@ namespace SpaceInvaders
         }
 
         //Fetch people from API
-        public static async Task FetchPeople()
+        public static async Task<List<Person>> FetchPeople()
         {
             //Add to class list 
             List<Person> persons = new List<Person>();
@@ -102,10 +101,11 @@ namespace SpaceInvaders
                 requestUrl = response.Next;
             }
             Console.WriteLine();
+            return persons;
         }
 
         //Fetch Starships from API
-        public static async Task FetchStarships()
+        public static async Task<List<Starships>> FetchStarships()
         {
             //Add to object list 
             List<Starships> starships = new List<Starships>();
@@ -124,6 +124,7 @@ namespace SpaceInvaders
                 requestUrl = response.Next;
             }
             Console.WriteLine();
+            return starships;
         }
     
         public static int ShowMenu(string prompt, string[] options)
