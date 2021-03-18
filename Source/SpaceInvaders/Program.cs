@@ -19,50 +19,50 @@ namespace SpaceInvaders
             Thread.Sleep(1000);
 
             bool running = true;
-                while (running)
+            while (running)
+            {
+                int selectedMenu = ShowMenu("What do you want to do?", new[]
                 {
-                    int selectedMenu = ShowMenu("What do you want to do?", new[]
-                    {
                     "Register new traveller", //Index 0
                     "End current parking", //Index 1
                     "Exit program", //Index 2
                 });
-                    Console.Clear();
+                Console.Clear();
 
-                    if (selectedMenu == 0)
-                    {
-                        Console.WriteLine("Who are you traveller? ");
-                        
-                        var peopleList = await FetchPeople();
-                        if (peopleList.Count == 0)
-                        {
-                            Console.WriteLine("Sorry, you are not a Starwars character. Fuck off.");
-                        }
-                        else
-                        {
-                            Console.WriteLine($"Welcome: {peopleList[0].Name}");
-                        }
-                        Console.WriteLine();
+                if (selectedMenu == 0)
+                {
+                    Console.WriteLine("Who are you traveller? ");
 
-                        //Method 1: Async API and loop through to see if we can find that name
-                        //Method 2: Based on the person, call for another API with Async, and see which vehicles this character have + which planet he's from.
-                        //Method 3: New Menu choice where the character can select his vehicle.
-                        //Method 4: IF the vehicle fits / or IF the spaceship is not full, REGiSTER the parking and att into a database.
-                        //Save the parking into a file so we can load it?
-                    }
-                    else if (selectedMenu == 1) 
+                    var peopleList = await FetchPeople();
+                    if (peopleList.Count == 0)
                     {
-                        Console.WriteLine("Thank you for choosing SpacePark! We hope to see you soon again :)\n");
-                        //METHOD: Print the Invoice to the traveller. Also add the totalSum into the database.
-                        //running = false;
+                        Console.WriteLine("Sorry, you are not a Starwars character. Fuck off.");
                     }
-                    else 
+                    else
                     {
-                        Console.WriteLine("Terminating program.");
-                        running = false;
+                        Console.WriteLine($"Welcome: {peopleList[0].Name}");
                     }
+                    Console.WriteLine();
+
+                    //Method 1: Async API and loop through to see if we can find that name
+                    //Method 2: Based on the person, call for another API with Async, and see which vehicles this character have + which planet he's from.
+                    //Method 3: New Menu choice where the character can select his vehicle.
+                    //Method 4: IF the vehicle fits / or IF the spaceship is not full, REGiSTER the parking and att into a database.
+                    //Save the parking into a file so we can load it?
+                }
+                else if (selectedMenu == 1)
+                {
+                    Console.WriteLine("Thank you for choosing SpacePark! We hope to see you soon again :)\n");
+                    //METHOD: Print the Invoice to the traveller. Also add the totalSum into the database.
+                    //running = false;
+                }
+                else
+                {
+                    Console.WriteLine("Terminating program.");
+                    running = false;
                 }
             }
+        }
 
         //API for People
         public static async Task<APIResponse> FetchDataPeople(string requestUrl)
@@ -87,7 +87,7 @@ namespace SpaceInvaders
             var request = new RestRequest(resource, DataFormat.Json);
             // NOTE: The Swreponse is a custom class which represents the data returned by the API, RestClient have buildin ORM which maps the data from the reponse into a given type of object
 
-          var response = await client.GetAsync<APIResponseStarships>(request);
+            var response = await client.GetAsync<APIResponseStarships>(request);
             return response;
         }
 
@@ -133,7 +133,7 @@ namespace SpaceInvaders
             Console.WriteLine();
             return starships;
         }
-    
+
         public static int ShowMenu(string prompt, string[] options)
         {
             if (options == null || options.Length == 0)
