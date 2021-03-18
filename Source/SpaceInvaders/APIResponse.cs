@@ -13,6 +13,4 @@ namespace SpaceInvaders
         public string Previous { get; set; }
         public List<Person> Results { get; set; }
     }
-
-
 }

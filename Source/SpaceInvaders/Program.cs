@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using RestSharp;
@@ -16,53 +17,90 @@ namespace SpaceInvaders
             //var starshipList = await FetchStarships();
 
             Console.WriteLine("Welcome to SpacePark!\n");
-            Thread.Sleep(1000);
+            //Thread.Sleep(1000);
 
-            bool running = true;
-                while (running)
+            while (true)
+            {
+                int selectedMenu = ShowMenu("What do you want to do?", new[]
                 {
-                    int selectedMenu = ShowMenu("What do you want to do?", new[]
-                    {
                     "Register new traveller", //Index 0
                     "End current parking", //Index 1
                     "Exit program", //Index 2
                 });
-                    Console.Clear();
+                Console.Clear();
 
-                    if (selectedMenu == 0)
+                if (selectedMenu == 0)
+                {
+                    Console.WriteLine("Who are you traveller? ");
+
+                    var peopleList = await FetchPeople(Console.ReadLine());
+                    //var peopleList = await FetchPeople("luke");
+                    Console.WriteLine();
+
+                    if (peopleList.Count == 0)
                     {
-                        Console.WriteLine("Who are you traveller? ");
-                        
-                        var peopleList = await FetchPeople();
-                        if (peopleList.Count == 0)
+                        Console.WriteLine("Sorry, you are not a Starwars character. Fuck off.");
+                    }
+                    else
+                    {
+                        int selectedMenuPerson = 0;
+
+                        if (peopleList.Count > 1)
                         {
-                            Console.WriteLine("Sorry, you are not a Starwars character. Fuck off.");
+                            selectedMenuPerson = ShowMenu("Please select ", peopleList.Select(p => p.Name).ToArray());
+                        }
+
+                        Person selectedPerson = peopleList[selectedMenuPerson];
+
+                        Console.Clear();
+                        Console.WriteLine($"Welcome: {selectedPerson.Name}");
+
+                        // Fetch all Starships
+                        var allStarships = await FetchStarships();
+                        List<Starships> personalShips = allStarships.Join(selectedPerson.Starships,
+                                                                      s1 => s1.URL, s2 => s2,
+                                                                      (s1, s2) => s1).ToList();
+                        // alt: sql syntax
+                        //List<Starships> personsShipsSQL = (from s1 in starships
+                        //             join s2 in selectedPerson.Starships on s1.URL equals s2
+                        //             select s1).ToList();
+
+                        if (personalShips.Count > 0)
+                        {
+                            int selectedShipIndex = ShowMenu("Please select your ship", personalShips.Select(p => p.Name).ToArray());
+                            Starships selectedShip = personalShips[selectedShipIndex];
+
+                            Console.Clear();
+                            Console.WriteLine($"You selected: {selectedShip.Name}");
+                            // todo: park the ship
                         }
                         else
                         {
-                            Console.WriteLine($"Welcome: {peopleList[0].Name}");
+                            // no ships, do something
                         }
-                        Console.WriteLine();
+                    }
 
-                        //Method 1: Async API and loop through to see if we can find that name
-                        //Method 2: Based on the person, call for another API with Async, and see which vehicles this character have + which planet he's from.
-                        //Method 3: New Menu choice where the character can select his vehicle.
-                        //Method 4: IF the vehicle fits / or IF the spaceship is not full, REGiSTER the parking and att into a database.
-                        //Save the parking into a file so we can load it?
-                    }
-                    else if (selectedMenu == 1) 
-                    {
-                        Console.WriteLine("Thank you for choosing SpacePark! We hope to see you soon again :)\n");
-                        //METHOD: Print the Invoice to the traveller. Also add the totalSum into the database.
-                        //running = false;
-                    }
-                    else 
-                    {
-                        Console.WriteLine("Terminating program.");
-                        running = false;
-                    }
+                    Console.WriteLine();
+
+                    //Method 1: Async API and loop through to see if we can find that name
+                    //Method 2: Based on the person, call for another API with Async, and see which vehicles this character have + which planet he's from.
+                    //Method 3: New Menu choice where the character can select his vehicle.
+                    //Method 4: IF the vehicle fits / or IF the spaceship is not full, REGiSTER the parking and att into a database.
+                    //Save the parking into a file so we can load it?
+                }
+                else if (selectedMenu == 1)
+                {
+                    Console.WriteLine("Thank you for choosing SpacePark! We hope to see you soon again :)\n");
+                    //METHOD: Print the Invoice to the traveller. Also add the totalSum into the database.
+                    //running = false;
+                }
+                else
+                {
+                    Console.WriteLine("Terminating program.");
+                    break;
                 }
             }
+        }
 
         //API for People
         public static async Task<APIResponse> FetchDataPeople(string requestUrl)
@@ -73,8 +111,7 @@ namespace SpaceInvaders
             var client = new RestClient("http://swapi.dev/api/");
             var request = new RestRequest(resource, DataFormat.Json);
             // NOTE: The Swreponse is a custom class which represents the data returned by the API, RestClient have buildin ORM which maps the data from the reponse into a given type of object
-            var response = await client.GetAsync<APIResponse>(request);
-            return response;
+            return await client.GetAsync<APIResponse>(request);
         }
 
         //API for Starships
@@ -87,19 +124,17 @@ namespace SpaceInvaders
             var request = new RestRequest(resource, DataFormat.Json);
             // NOTE: The Swreponse is a custom class which represents the data returned by the API, RestClient have buildin ORM which maps the data from the reponse into a given type of object
 
-          var response = await client.GetAsync<APIResponseStarships>(request);
+            var response = await client.GetAsync<APIResponseStarships>(request);
             return response;
         }
 
         //Fetch people from API
-        public static async Task<List<Person>> FetchPeople()
+        public static async Task<List<Person>> FetchPeople(string input)
         {
             //Add to class list
             List<Person> persons = new List<Person>();
-
             APIResponse response;
 
-            string input = Console.ReadLine();
             string requestUrl = $"http://swapi.dev/api/people/?search={input}";
 
             while (requestUrl != null)
@@ -108,6 +143,7 @@ namespace SpaceInvaders
                 persons.AddRange(response.Results);
                 requestUrl = response.Next;
             }
+
             return persons;
         }
 
@@ -123,17 +159,13 @@ namespace SpaceInvaders
             while (requestUrl != null)
             {
                 response = await FetchDataStarship(requestUrl);
-                foreach (var p in response.Results)
-                {
-                    Console.WriteLine($"{p.Name}, Length: {p.Length}m");
-                    starships.Add(p);
-                }
+                starships.AddRange(response.Results);
                 requestUrl = response.Next;
             }
-            Console.WriteLine();
+
             return starships;
         }
-    
+
         public static int ShowMenu(string prompt, string[] options)
         {
             if (options == null || options.Length == 0)
