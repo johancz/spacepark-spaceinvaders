@@ -34,6 +34,7 @@ namespace SpaceInvaders
                     Console.WriteLine("Who are you traveller? ");
 
                     var peopleList = await FetchPeople(Console.ReadLine());
+                    //var peopleList = await FetchPeople("luke");
                     Console.WriteLine();
 
                     if (peopleList.Count == 0)
@@ -47,12 +48,38 @@ namespace SpaceInvaders
                         if (peopleList.Count > 1)
                         {
                             selectedMenuPerson = ShowMenu("Please select ", peopleList.Select(p => p.Name).ToArray());
-
                         }
 
+                        Person selectedPerson = peopleList[selectedMenuPerson];
+
                         Console.Clear();
-                        Console.WriteLine($"Welcome: {peopleList[selectedMenuPerson].Name}");
+                        Console.WriteLine($"Welcome: {selectedPerson.Name}");
+
+                        // Fetch all Starships
+                        var allStarships = await FetchStarships();
+                        List<Starships> personalShips = allStarships.Join(selectedPerson.Starships,
+                                                                      s1 => s1.URL, s2 => s2,
+                                                                      (s1, s2) => s1).ToList();
+                        // alt: sql syntax
+                        //List<Starships> personsShipsSQL = (from s1 in starships
+                        //             join s2 in selectedPerson.Starships on s1.URL equals s2
+                        //             select s1).ToList();
+
+                        if (personalShips.Count > 0)
+                        {
+                            int selectedShipIndex = ShowMenu("Please select your ship", personalShips.Select(p => p.Name).ToArray());
+                            Starships selectedShip = personalShips[selectedShipIndex];
+
+                            Console.Clear();
+                            Console.WriteLine($"You selected: {selectedShip.Name}");
+                            // todo: park the ship
+                        }
+                        else
+                        {
+                            // no ships, do something
+                        }
                     }
+
                     Console.WriteLine();
 
                     //Method 1: Async API and loop through to see if we can find that name
@@ -135,7 +162,7 @@ namespace SpaceInvaders
                 starships.AddRange(response.Results);
                 requestUrl = response.Next;
             }
-            Console.WriteLine();
+
             return starships;
         }
 
