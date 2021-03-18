@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Threading;
-using RestSharp;
 using System.IO;
 using System.Net;
+using System.Threading;
+using RestSharp;
 
 namespace SpaceInvaders
 {
@@ -10,6 +10,14 @@ namespace SpaceInvaders
     {
         static void Main(string[] args)
         {
+            var webClient = new WebClient();
+            var api =  webClient.DownloadString(new Uri(@"https://swapi.dev/api/people/"));
+
+            using (var streamWriter = new StreamWriter(@"C:\Users\Mazdak\source\repos\Barista\spacepark-spaceinvaders\Source\SpaceInvaders\JSON\people.json"))
+            {
+                streamWriter.Write(api);
+            }
+
             Console.WriteLine("Welcome to SpacePark!\n");
             Thread.Sleep(1000);
 
@@ -97,13 +105,6 @@ namespace SpaceInvaders
                 {
                     selected = Math.Max(selected - 1, 0);
                 }
-            }
-            var webClient = new WebClient();
-            var api = webClient.DownloadString(new Uri(@"https://swapi.dev/api/people/"));
-
-            using (var streamWriter = new StreamWriter(@"C:\Users\Mazdak\Documents\people.json"))
-            {
-                streamWriter.Write(api);
             }
 
             // Reset the cursor and return the selected option.
