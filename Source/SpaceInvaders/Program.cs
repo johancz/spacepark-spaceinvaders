@@ -86,14 +86,15 @@ namespace SpaceInvaders
             var client = new RestClient("http://swapi.dev/api/");
             var request = new RestRequest(resource, DataFormat.Json);
             // NOTE: The Swreponse is a custom class which represents the data returned by the API, RestClient have buildin ORM which maps the data from the reponse into a given type of object
-            var response = await client.GetAsync<APIResponseStarships>(request);
+
+          var response = await client.GetAsync<APIResponseStarships>(request);
             return response;
         }
 
         //Fetch people from API
         public static async Task<List<Person>> FetchPeople()
         {
-            //Add to class list 
+            //Add to class list
             List<Person> persons = new List<Person>();
 
             APIResponse response;
@@ -186,6 +187,5 @@ namespace SpaceInvaders
             Console.CursorVisible = true;
             return selected;
         }
-
     }
 }
