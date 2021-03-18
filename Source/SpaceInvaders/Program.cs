@@ -12,8 +12,8 @@ namespace SpaceInvaders
     {
         static async Task Main(string[] args)
         {
-            var peopleList = await FetchPeople();
-            var starshipList = await FetchStarships();        
+            //var peopleList = await FetchPeople();
+            //var starshipList = await FetchStarships();
 
             Console.WriteLine("Welcome to SpacePark!\n");
             Thread.Sleep(1000);
@@ -29,10 +29,19 @@ namespace SpaceInvaders
                 });
                     Console.Clear();
 
-                    if (selectedMenu == 0) //ADD EXPENSE
+                    if (selectedMenu == 0)
                     {
                         Console.WriteLine("Who are you traveller? ");
-                        string name = Console.ReadLine();
+                        
+                        var peopleList = await FetchPeople();
+                        if (peopleList.Count == 0)
+                        {
+                            Console.WriteLine("Sorry, you are not a Starwars character. Fuck off.");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Welcome: {peopleList[0].Name}");
+                        }
                         Console.WriteLine();
 
                         //Method 1: Async API and loop through to see if we can find that name
@@ -41,13 +50,13 @@ namespace SpaceInvaders
                         //Method 4: IF the vehicle fits / or IF the spaceship is not full, REGiSTER the parking and att into a database.
                         //Save the parking into a file so we can load it?
                     }
-                    else if (selectedMenu == 1) //SHOWS ALL EXPENSES
+                    else if (selectedMenu == 1) 
                     {
                         Console.WriteLine("Thank you for choosing SpacePark! We hope to see you soon again :)\n");
                         //METHOD: Print the Invoice to the traveller. Also add the totalSum into the database.
                         //running = false;
                     }
-                    else //SHOWS EXPENSES SORTED BY CATEGORY
+                    else 
                     {
                         Console.WriteLine("Terminating program.");
                         running = false;
@@ -88,19 +97,16 @@ namespace SpaceInvaders
             List<Person> persons = new List<Person>();
 
             APIResponse response;
-            string requestUrl = "http://swapi.dev/api/people/";
+
+            string input = Console.ReadLine();
+            string requestUrl = $"http://swapi.dev/api/people/?search={input}";
 
             while (requestUrl != null)
             {
                 response = await FetchDataPeople(requestUrl);
-                foreach (var p in response.Results)
-                {
-                    Console.WriteLine(p.Name);
-                    persons.Add(p);
-                }
+                persons.AddRange(response.Results);
                 requestUrl = response.Next;
             }
-            Console.WriteLine();
             return persons;
         }
 
