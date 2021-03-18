@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using RestSharp;
@@ -16,10 +17,9 @@ namespace SpaceInvaders
             //var starshipList = await FetchStarships();
 
             Console.WriteLine("Welcome to SpacePark!\n");
-            Thread.Sleep(1000);
+            //Thread.Sleep(1000);
 
-            bool running = true;
-            while (running)
+            while (true)
             {
                 int selectedMenu = ShowMenu("What do you want to do?", new[]
                 {
@@ -33,14 +33,25 @@ namespace SpaceInvaders
                 {
                     Console.WriteLine("Who are you traveller? ");
 
-                    var peopleList = await FetchPeople();
+                    var peopleList = await FetchPeople(Console.ReadLine());
+                    Console.WriteLine();
+
                     if (peopleList.Count == 0)
                     {
                         Console.WriteLine("Sorry, you are not a Starwars character. Fuck off.");
                     }
                     else
                     {
-                        Console.WriteLine($"Welcome: {peopleList[0].Name}");
+                        int selectedMenuPerson = 0;
+
+                        if (peopleList.Count > 1)
+                        {
+                            selectedMenuPerson = ShowMenu("Please select ", peopleList.Select(p => p.Name).ToArray());
+
+                        }
+
+                        Console.Clear();
+                        Console.WriteLine($"Welcome: {peopleList[selectedMenuPerson].Name}");
                     }
                     Console.WriteLine();
 
@@ -59,7 +70,7 @@ namespace SpaceInvaders
                 else
                 {
                     Console.WriteLine("Terminating program.");
-                    running = false;
+                    break;
                 }
             }
         }
@@ -73,8 +84,7 @@ namespace SpaceInvaders
             var client = new RestClient("http://swapi.dev/api/");
             var request = new RestRequest(resource, DataFormat.Json);
             // NOTE: The Swreponse is a custom class which represents the data returned by the API, RestClient have buildin ORM which maps the data from the reponse into a given type of object
-            var response = await client.GetAsync<APIResponse>(request);
-            return response;
+            return await client.GetAsync<APIResponse>(request);
         }
 
         //API for Starships
@@ -92,14 +102,12 @@ namespace SpaceInvaders
         }
 
         //Fetch people from API
-        public static async Task<List<Person>> FetchPeople()
+        public static async Task<List<Person>> FetchPeople(string input)
         {
             //Add to class list
             List<Person> persons = new List<Person>();
-
             APIResponse response;
 
-            string input = Console.ReadLine();
             string requestUrl = $"http://swapi.dev/api/people/?search={input}";
 
             while (requestUrl != null)
@@ -108,6 +116,7 @@ namespace SpaceInvaders
                 persons.AddRange(response.Results);
                 requestUrl = response.Next;
             }
+
             return persons;
         }
 
@@ -123,11 +132,7 @@ namespace SpaceInvaders
             while (requestUrl != null)
             {
                 response = await FetchDataStarship(requestUrl);
-                foreach (var p in response.Results)
-                {
-                    Console.WriteLine($"{p.Name}, Length: {p.Length}m");
-                    starships.Add(p);
-                }
+                starships.AddRange(response.Results);
                 requestUrl = response.Next;
             }
             Console.WriteLine();
