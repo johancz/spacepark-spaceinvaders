@@ -51,10 +51,9 @@ namespace SpaceInvaders
 
                         Person selectedPerson = peopleList[selectedMenuPerson];
 
-                        Console.Clear();
-
                         // Fetch all Starships
                         var allStarships = await FetchStarships();
+                        Console.Clear();
                         List<Starships> personalShips = allStarships.Join(selectedPerson.Starships,
                                                                       s1 => s1.URL, s2 => s2,
                                                                       (s1, s2) => s1).ToList();
@@ -152,7 +151,7 @@ namespace SpaceInvaders
 
             //We use user input to search through the API for a Starwars character
             string requestUrl = $"http://swapi.dev/api/people/?search={input}";
-
+            Console.WriteLine("\nLoading...");
             while (requestUrl != null)
             {
                 response = await FetchDataPeople(requestUrl);
