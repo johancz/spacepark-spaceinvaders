@@ -53,13 +53,23 @@ namespace SpaceInvaders
                         Person selectedPerson = peopleList[selectedMenuPerson];
 
                         Console.Clear();
-                        Console.WriteLine($"Welcome: {selectedPerson.Name}");
+                        //Console.WriteLine($"Welcome: {selectedPerson.Name}");
 
                         // Fetch all Starships
                         var allStarships = await FetchStarships();
                         List<Starships> personalShips = allStarships.Join(selectedPerson.Starships,
                                                                       s1 => s1.URL, s2 => s2,
                                                                       (s1, s2) => s1).ToList();
+                        //If the character doesn't own a starship
+                        if (personalShips.Count == 0)
+                        {
+                            Console.WriteLine($"We're sorry but {selectedPerson.Name} does not own a starship");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Welcome: {selectedPerson.Name}\n");
+                        }
+                        
                         // alt: sql syntax
                         //List<Starships> personsShipsSQL = (from s1 in starships
                         //             join s2 in selectedPerson.Starships on s1.URL equals s2
@@ -67,6 +77,7 @@ namespace SpaceInvaders
 
                         if (personalShips.Count > 0)
                         {
+
                             int selectedShipIndex = ShowMenu("Please select your ship", personalShips.Select(p => p.Name).ToArray());
                             Starships selectedShip = personalShips[selectedShipIndex];
 
