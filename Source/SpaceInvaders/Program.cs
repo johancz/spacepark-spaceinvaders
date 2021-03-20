@@ -18,7 +18,7 @@ namespace SpaceInvaders
             CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
 
             Console.WriteLine("Welcome to SpacePark!\n");
-            //Thread.Sleep(1000);
+            Thread.Sleep(1000);
 
             while (true)
             {
@@ -46,7 +46,6 @@ namespace SpaceInvaders
                     else
                     {
                         int selectedMenuPerson = 0;
-
                         if (peopleList.Count > 1)
                         {
                             selectedMenuPerson = ShowMenu("Please select ", peopleList.Select(p => p.Name).ToArray());
@@ -94,7 +93,7 @@ namespace SpaceInvaders
                                 else
                                 {
                                     Console.ForegroundColor = ConsoleColor.Red;
-                                    Console.WriteLine($"We're sorry but your {selectedShip.Name} is too big ({selectedShip.Length}m) for our parking lots.");
+                                    Console.WriteLine($"We're sorry but your {selectedShip.Name} is too big ({selectedShip.Length}m) for our parking lots. (Maximum length: 30m)");
                                     Console.ForegroundColor = ConsoleColor.White;
                                     //Do nothing as we cannot park the ship
                                 }
@@ -107,7 +106,6 @@ namespace SpaceInvaders
                 {
                     Console.WriteLine("Thank you for choosing SpacePark! We hope to see you soon again :)\n");
                     //METHOD: Print the Invoice to the traveller. Also add the totalSum into the database.
-                    //running = false;
                 }
                 else
                 {
