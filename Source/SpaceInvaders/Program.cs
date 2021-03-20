@@ -24,7 +24,7 @@ namespace SpaceInvaders
                 int selectedMenu = ShowMenu("What do you want to do?", new[]
                 {
                     "Register new traveller", //Index 0
-                    "End current parking", //Index 1
+                    "End a current parking", //Index 1
                     "Exit program", //Index 2
                 });
                 Console.Clear();
@@ -38,7 +38,9 @@ namespace SpaceInvaders
 
                     if (peopleList.Count == 0)
                     {
-                        Console.WriteLine("Sorry, you are not a Starwars character. Fuck off.");
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Sorry, you are not a Starwars character. Back to the void with ya!");
+                        Console.ForegroundColor = ConsoleColor.White;
                     }
                     else
                     {
@@ -58,39 +60,43 @@ namespace SpaceInvaders
                                                                       s1 => s1.URL, s2 => s2,
                                                                       (s1, s2) => s1).ToList();
 
-                        // alt: sql syntax
-                        //List<Starships> personsShipsSQL = (from s1 in starships
-                        //             join s2 in selectedPerson.Starships on s1.URL equals s2
-                        //             select s1).ToList();
-
                         //If the character doesn't own a starship
                         if (personalShips.Count == 0)
                         {
-                            Console.WriteLine($"We're sorry but {selectedPerson.Name} does not own a starship");
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine($"There is no registered starship under the name of {selectedPerson.Name}.");
+                            Console.ForegroundColor = ConsoleColor.White;
                         }
                         else
                         {
-                            Console.WriteLine($"Welcome: {selectedPerson.Name}\n");
-                        }
-                        
-
-                        if (personalShips.Count > 0)
-                        {
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            Console.WriteLine($"Welcome, {selectedPerson.Name}!\n");
+                            Console.ForegroundColor = ConsoleColor.White;
 
                             int selectedShipIndex = ShowMenu("Please select your ship", personalShips.Select(p => p.Name).ToArray());
                             Starships selectedShip = personalShips[selectedShipIndex];
-                            Console.WriteLine("\nLoading...\n");
+                            Console.WriteLine("\nLoading...");
                             Thread.Sleep(2000);
                             Console.Clear();
-                            Console.ForegroundColor = ConsoleColor.Yellow;
-                            Console.WriteLine($"You selected: {selectedShip.Name}, Length: {selectedShip.Length}m");
-                            Console.ForegroundColor = ConsoleColor.White;
 
-                            // todo: park the ship
-                        }
-                        else
-                        {
-                            // no ships, do something
+                            //We check if the starship fits in the parkinglot
+                            if(double.TryParse(selectedShip.Length, out double result))
+                            {
+                                if(result <= 30)
+                                {
+                                    Console.ForegroundColor = ConsoleColor.Yellow;
+                                    Console.WriteLine($"You selected: {selectedShip.Name}, Length: {selectedShip.Length}m");
+                                    Console.ForegroundColor = ConsoleColor.White;
+                                    //Add parking into database
+                                }
+                                else
+                                {
+                                    Console.ForegroundColor = ConsoleColor.Red;
+                                    Console.WriteLine($"We're sorry but your {selectedShip.Name} is too big ({selectedShip.Length}m) for our parking lots.");
+                                    Console.ForegroundColor = ConsoleColor.White;
+                                    //Do nothing as we cannot park the ship
+                                }
+                            }
                         }
                     }
 
@@ -124,7 +130,7 @@ namespace SpaceInvaders
 
             var client = new RestClient("http://swapi.dev/api/");
             var request = new RestRequest(resource, DataFormat.Json);
-            // NOTE: The Swreponse is a custom class which represents the data returned by the API, RestClient have buildin ORM which maps the data from the reponse into a given type of object
+
             return await client.GetAsync<APIResponse>(request);
         }
 
@@ -136,7 +142,6 @@ namespace SpaceInvaders
 
             var client = new RestClient("http://swapi.dev/api/");
             var request = new RestRequest(resource, DataFormat.Json);
-            // NOTE: The Swreponse is a custom class which represents the data returned by the API, RestClient have buildin ORM which maps the data from the reponse into a given type of object
 
             var response = await client.GetAsync<APIResponseStarships>(request);
             return response;
@@ -209,7 +214,7 @@ namespace SpaceInvaders
                     if (i == selected)
                     {
                         Console.BackgroundColor = ConsoleColor.Black;
-                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.ForegroundColor = ConsoleColor.Cyan;
                     }
                     Console.WriteLine("- " + option);
                     Console.ResetColor();
