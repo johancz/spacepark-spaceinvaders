@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,8 +14,8 @@ namespace SpaceInvaders
     {
         static async Task Main(string[] args)
         {
-            //var peopleList = await FetchPeople();
-            //var starshipList = await FetchStarships();
+            //Added this line to Parse double values to not mix "." and ","
+            CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
 
             Console.WriteLine("Welcome to SpacePark!\n");
             //Thread.Sleep(1000);
