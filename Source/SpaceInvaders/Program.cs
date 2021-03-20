@@ -80,6 +80,7 @@ namespace SpaceInvaders
                             Console.Clear();
 
                             //We check if the starship fits in the parkinglot
+                            //Parsing because the Length attribute is a Sting type
                             if(double.TryParse(selectedShip.Length, out double result))
                             {
                                 if(result <= 30)
@@ -99,14 +100,7 @@ namespace SpaceInvaders
                             }
                         }
                     }
-
                     Console.WriteLine();
-
-                    //Method 1: Async API and loop through to see if we can find that name, DONE
-                    //Method 2: Based on the person, call for another API with Async, and see which vehicles this character have. DONE
-                    //Method 3: New Menu choice where the character can select his vehicle. DONE
-                    //Method 4: IF the vehicle fits / or IF the spaceship is not full, REGiSTER the parking and att into a database.
-                    //Save the parking into a file so we can load it?
                 }
                 else if (selectedMenu == 1)
                 {
@@ -116,7 +110,9 @@ namespace SpaceInvaders
                 }
                 else
                 {
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Terminating program.");
+                    Console.ForegroundColor = ConsoleColor.White;
                     break;
                 }
             }
