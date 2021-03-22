@@ -10,8 +10,10 @@ namespace SpaceInvaders.Database
 {
     public static class DatabaseQueries
     {
-        public static void AddParkingToDB(Person person, Starships ship)
+        public static void AddParking(Person person, Starships ship)
         {
+
+
             using (var db = new MyContext())
             {
                 var parking = new Parking()
@@ -26,6 +28,22 @@ namespace SpaceInvaders.Database
                 Console.WriteLine("Your parking has started! Enjoy you stay at SpacePark.");
                 Console.WriteLine($"Traveller: {parking.Traveller}, Starship: {parking.StarShip}, StartTime: {parking.StartTime}");
             }
+
+        }
+
+        public static Parking CheckParking(string name)
+        {
+            using (var db = new MyContext())
+            {
+                 var activParking = db.Parkings.SingleOrDefault(x => x.Traveller == name && x.EndTime == null);
+
+                 return activParking;
+            }
+        }
+
+        public static void EndParking(Person person, Starships ship)
+        {
+
         }
     }
 }
