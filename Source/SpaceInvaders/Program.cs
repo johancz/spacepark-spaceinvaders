@@ -9,6 +9,7 @@ using SpaceInvaders.Objects;
 using SpaceInvaders.Traveller;
 using SpaceInvaders.API;
 using SpaceInvaders.Helpers;
+using SpaceInvaders.Database;
 
 namespace SpaceInvaders
 {
@@ -95,6 +96,7 @@ namespace SpaceInvaders
                                     Console.WriteLine($"You selected: {selectedShip.Name}, Length: {selectedShip.Length}m");
                                     Console.ForegroundColor = ConsoleColor.White;
                                     //Add parking into database
+                                    DatabaseQueries.AddParkingToDB(selectedPerson, selectedShip);
                                 }
                                 else
                                 {
