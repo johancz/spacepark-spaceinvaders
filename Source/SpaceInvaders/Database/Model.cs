@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SpaceInvaders.Database
 {
-    class Parking
+    public class Parking
     {
         [Key]
         public int ID { get; set; }
