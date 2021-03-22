@@ -124,14 +124,46 @@ namespace SpaceInvaders
                 }
                 else if (selectedMenu == 1)
                 {
-                    Console.WriteLine("Thank you for choosing SpacePark! We hope to see you soon again :)\n");
-                    //METHOD: Print the Invoice to the traveller. Also add the totalSum into the database.
+                    Console.WriteLine("Who are you traveller? ");
+
+                    var peopleList = await Fetch.People(Console.ReadLine());
+
+                    Console.WriteLine();
+
+                    if (peopleList.Count == 0)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Sorry, you are not a Starwars character. Back to the void with ya!");
+                        Console.ForegroundColor = ConsoleColor.White;
+                    }
+                    else
+                    {
+                        int selectedMenuPerson = 0;
+                        if (peopleList.Count > 1)
+                        {
+                            selectedMenuPerson = Menu.Options("Please select ", peopleList.Select(p => p.Name).ToArray());
+                        }
+
+                        Person selectedPerson = peopleList[selectedMenuPerson];
+
+
+                        if (DatabaseQueries.CheckParking(selectedPerson.Name) != null)
+                        {
+                            DatabaseQueries.EndParking(selectedPerson);
+                            Console.WriteLine("\nThank you for choosing SpacePark! We hope to see you soon again :)\n");
+                        }
+                        else
+                        {
+                            Console.WriteLine("There is no current parking under the name: " + selectedPerson.Name + "\n");
+                        }
+                        //METHOD: Print the Invoice to the traveller. Also add the totalSum into the database.
+                    }
                 }
                 else
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Terminating program.");
-                    Console.ResetColor();
+                    Console.ForegroundColor = ConsoleColor.White;
                     break;
                 }
             }
