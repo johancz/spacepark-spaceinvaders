@@ -142,19 +142,25 @@ namespace SpaceInvaders
                         if (peopleList.Count > 1)
                         {
                             selectedMenuPerson = Menu.Options("Please select ", peopleList.Select(p => p.Name).ToArray());
+                            Console.WriteLine();
                         }
 
                         Person selectedPerson = peopleList[selectedMenuPerson];
-
 
                         if (DatabaseQueries.CheckParking(selectedPerson.Name) != null)
                         {
                             DatabaseQueries.EndParking(selectedPerson);
                             Console.WriteLine("\nThank you for choosing SpacePark! We hope to see you soon again :)\n");
+                            Console.WriteLine("Returning to main menu..");
+                            Thread.Sleep(4000);
+                            Console.Clear();
                         }
                         else
                         {
                             Console.WriteLine("There is no current parking under the name: " + selectedPerson.Name + "\n");
+                            Console.WriteLine("Returning to main menu..");
+                            Thread.Sleep(3000);
+                            Console.Clear();
                         }
                         //METHOD: Print the Invoice to the traveller. Also add the totalSum into the database.
                     }
