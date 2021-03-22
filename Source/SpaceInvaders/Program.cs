@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -95,8 +95,10 @@ namespace SpaceInvaders
                                     Console.ForegroundColor = ConsoleColor.Yellow;
                                     Console.WriteLine($"You selected: {selectedShip.Name}, Length: {selectedShip.Length}m");
                                     Console.ForegroundColor = ConsoleColor.White;
+
                                     //Add parking into database
                                     DatabaseQueries.AddParkingToDB(selectedPerson, selectedShip);
+
                                 }
                                 else
                                 {
@@ -123,8 +125,6 @@ namespace SpaceInvaders
                     break;
                 }
             }
-        }
-
-       
+        }      
     }
 }
