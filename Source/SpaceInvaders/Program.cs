@@ -81,7 +81,7 @@ namespace SpaceInvaders
                     if (personalShips.Count == 0)
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine($"There is no registered starship under the name of {selectedPerson.Name}.");
+                        Console.WriteLine($"There is no registered starship under the name of {selectedPerson.Name}.\n");
                         Console.ResetColor();
                         continue; // Go back to the start menu.
                     }
