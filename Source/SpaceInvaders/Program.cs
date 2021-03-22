@@ -9,6 +9,7 @@ using SpaceInvaders.Objects;
 using SpaceInvaders.Traveller;
 using SpaceInvaders.API;
 using SpaceInvaders.Helpers;
+using SpaceInvaders.Database;
 
 namespace SpaceInvaders
 {
@@ -94,7 +95,24 @@ namespace SpaceInvaders
                                     Console.ForegroundColor = ConsoleColor.Yellow;
                                     Console.WriteLine($"You selected: {selectedShip.Name}, Length: {selectedShip.Length}m");
                                     Console.ForegroundColor = ConsoleColor.White;
+
                                     //Add parking into database
+                                    using (var db = new MyContext())
+                                    {
+                                        var parking = new Parking() 
+                                        { StartTime = DateTime.UtcNow, 
+                                            EndTime = null, 
+                                            Traveller = selectedPerson.Name, 
+                                            StarShip = selectedShip.Name, 
+                                            TotalSum = null 
+                                        };
+
+                                        db.Parkings.Add(parking);
+                                        db.SaveChanges();
+
+                                        Console.WriteLine("Your parking has started! Enjoy you stay at SpacePark.");
+                                        Console.WriteLine($"Traveller: {parking.Traveller}, Starship: {parking.StarShip}, StartTime: {parking.StartTime}");
+                                    }
                                 }
                                 else
                                 {
@@ -121,8 +139,6 @@ namespace SpaceInvaders
                     break;
                 }
             }
-        }
-
-       
+        }      
     }
 }
