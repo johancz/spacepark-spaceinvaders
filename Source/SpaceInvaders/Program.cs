@@ -61,7 +61,7 @@ namespace SpaceInvaders
 
                         if (DatabaseQueries.CheckParking(selectedPerson.Name) != null)
                         {
-                            Console.WriteLine("You have already parked\nPress any key to continue");
+                            Console.WriteLine($"\nThere is already an active parking registered on {selectedPerson.Name}\nPress any key to continue");
                             Console.ReadKey();
                             Console.Clear();
                             continue;
@@ -102,10 +102,10 @@ namespace SpaceInvaders
                                 {
                                     Console.ForegroundColor = ConsoleColor.Yellow;
                                     Console.WriteLine($"You selected: {selectedShip.Name}, Length: {selectedShip.Length}m");
-                                    Console.ForegroundColor = ConsoleColor.White;
 
                                     //Add parking into database
                                     DatabaseQueries.AddParking(selectedPerson, selectedShip);
+                                    Console.ForegroundColor = ConsoleColor.White;
                                 }
                                 else
                                 {
