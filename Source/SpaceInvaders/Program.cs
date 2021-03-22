@@ -79,11 +79,12 @@ namespace SpaceInvaders
                             Thread.Sleep(2000);
                             Console.Clear();
 
+                            //SLÄNG IN NEDAN I FUNKTION
                             //We check if the starship fits in the parkinglot
-                            //Parsing because the Length attribute is a Sting type
-                            if(double.TryParse(selectedShip.Length, out double result))
+                            //Parsing because the Length attribute is a String type
+                            if (double.TryParse(selectedShip.Length, out double result))
                             {
-                                if(result <= 30)
+                                if (result <= 30)
                                 {
                                     Console.ForegroundColor = ConsoleColor.Yellow;
                                     Console.WriteLine($"You selected: {selectedShip.Name}, Length: {selectedShip.Length}m");
