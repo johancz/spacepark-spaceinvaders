@@ -22,6 +22,5 @@ namespace SpaceInvaders.Database
                 .Property(x => x.StartTime)
                 .HasDefaultValueSql("getdate()");
         }
-
     }
 }

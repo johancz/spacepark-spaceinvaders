@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SpaceInvaders.Traveller
 {
-    class APIResponseTraveller
+    public class APIResponseTraveller
     {
         public int Count { get; set; }
         public string Next { get; set; }

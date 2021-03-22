@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SpaceInvaders.Objects
 {
-    class APIResponseStarships
+    public class APIResponseStarships
     {
         public int Count { get; set; }
         public string Next { get; set; }

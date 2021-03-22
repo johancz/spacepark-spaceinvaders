@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using RestSharp;
 using SpaceInvaders.Objects;
 using SpaceInvaders.Traveller;
+using SpaceInvaders.API;
 
 namespace SpaceInvaders
 {
@@ -36,7 +37,7 @@ namespace SpaceInvaders
                 {
                     Console.WriteLine("Who are you traveller? ");
 
-                    var peopleList = await FetchPeople(Console.ReadLine());
+                    var peopleList = await Fetch.People(Console.ReadLine());
 
                     Console.WriteLine();
 
@@ -57,7 +58,7 @@ namespace SpaceInvaders
                         Person selectedPerson = peopleList[selectedMenuPerson];
 
                         // Fetch all Starships
-                        var allStarships = await FetchStarships();
+                        var allStarships = await Fetch.Starships();
                         Console.Clear();
                         List<Starships> personalShips = allStarships.Join(selectedPerson.Starships,
                                                                       s1 => s1.URL, s2 => s2,
@@ -121,68 +122,9 @@ namespace SpaceInvaders
             }
         }
 
-        //API for People
-        public static async Task<APIResponseTraveller> FetchDataPeople(string requestUrl)
+        private static Task FetchPeople(string v)
         {
-            string baseUrl = "http://swapi.dev/api/";
-            string resource = requestUrl.Substring(baseUrl.Length);
-
-            var client = new RestClient("http://swapi.dev/api/");
-            var request = new RestRequest(resource, DataFormat.Json);
-
-            return await client.GetAsync<APIResponseTraveller>(request);
-        }
-
-        //API for Starships
-        public static async Task<APIResponseStarships> FetchDataStarship(string requestUrl)
-        {
-            string baseUrl = "http://swapi.dev/api/";
-            string resource = requestUrl.Substring(baseUrl.Length);
-
-            var client = new RestClient("http://swapi.dev/api/");
-            var request = new RestRequest(resource, DataFormat.Json);
-
-            var response = await client.GetAsync<APIResponseStarships>(request);
-            return response;
-        }
-
-        //Fetch people from API
-        public static async Task<List<Person>> FetchPeople(string input)
-        {
-            //Add to class list
-            List<Person> persons = new List<Person>();
-            APIResponseTraveller response;
-
-
-            //We use user input to search through the API for a Starwars character
-            string requestUrl = $"http://swapi.dev/api/people/?search={input}";
-            Console.WriteLine("\nLoading...");
-
-            while (requestUrl != null)
-            {
-                response = await FetchDataPeople(requestUrl);
-                persons.AddRange(response.Results);
-                requestUrl = response.Next;
-            }
-            return persons;
-        }
-
-        //Fetch Starships from API
-        public static async Task<List<Starships>> FetchStarships()
-        {
-            //Add to object list 
-            List<Starships> starships = new List<Starships>();
-
-            APIResponseStarships response;
-            string requestUrl = "http://swapi.dev/api/starships/";
-
-            while (requestUrl != null)
-            {
-                response = await FetchDataStarship(requestUrl);
-                starships.AddRange(response.Results);
-                requestUrl = response.Next;
-            }
-            return starships;
+            throw new NotImplementedException();
         }
 
         public static int ShowMenu(string prompt, string[] options)
