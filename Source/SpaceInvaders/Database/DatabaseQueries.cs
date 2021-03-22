@@ -25,10 +25,8 @@ namespace SpaceInvaders.Database
                 db.Parkings.Add(parking);
                 db.SaveChanges();
 
-                Console.WriteLine("Your parking has started! Enjoy you stay at SpacePark.");
-                Console.WriteLine($"Traveller: {parking.Traveller}, Starship: {parking.StarShip}, StartTime: {parking.StartTime}");
+                Console.WriteLine($"\n[PARKING DETAILS]\nTraveller: {parking.Traveller}, Starship: {parking.StarShip}, StartTime: {parking.StartTime}");
             }
-
         }
 
         public static Parking CheckParking(string name)
