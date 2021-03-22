@@ -41,7 +41,7 @@ namespace SpaceInvaders
                 {
                     Console.WriteLine("Who are you traveller? ");
                     var peopleList = await Fetch.People(Console.ReadLine());
-                    Console.WriteLine();
+                    //Console.WriteLine();
 
                     // If the person is not a Star Wars character, go back to the start menu
                     if (peopleList.Count == 0)
@@ -55,6 +55,7 @@ namespace SpaceInvaders
                     int selectedMenuPerson = 0;
                     if (peopleList.Count > 1)
                     {
+                        Console.WriteLine();
                         selectedMenuPerson = Menu.Options("Please select ", peopleList.Select(p => p.Name).ToArray());
                     }
 
@@ -63,7 +64,7 @@ namespace SpaceInvaders
                     // If the person is already parked, go back to the start menu
                     if (DatabaseQueries.CheckParking(selectedPerson.Name) != null)
                     {
-                        Console.WriteLine("You have already parked\nPress any key to continue");
+                        Console.WriteLine($"\nThere is already an active parking registered on {selectedPerson.Name}\nPress any key to continue...");
                         Console.ReadKey();
                         Console.Clear();
                         continue; // Go back to the start menu.
@@ -104,10 +105,10 @@ namespace SpaceInvaders
                         {
                             Console.ForegroundColor = ConsoleColor.Yellow;
                             Console.WriteLine($"You selected: {selectedShip.Name}, Length: {selectedShip.Length}m");
-                            Console.ResetColor();
 
                             //Add parking into database
                             DatabaseQueries.AddParking(selectedPerson, selectedShip);
+                            Console.ResetColor();
                         }
                         else
                         {
