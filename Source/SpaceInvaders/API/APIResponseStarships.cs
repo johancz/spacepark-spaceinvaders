@@ -1,16 +1,15 @@
-﻿using SpaceInvaders.Objects;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SpaceInvaders.Traveller
+namespace SpaceInvaders.Objects
 {
-    class APIResponse
+    public class APIResponseStarships
     {
         public int Count { get; set; }
         public string Next { get; set; }
-        public List<Person> Results { get; set; }
+        public List<Starships> Results { get; set; }
     }
 }
