@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -97,22 +97,8 @@ namespace SpaceInvaders
                                     Console.ForegroundColor = ConsoleColor.White;
 
                                     //Add parking into database
-                                    using (var db = new MyContext())
-                                    {
-                                        var parking = new Parking() 
-                                        { StartTime = DateTime.UtcNow, 
-                                            EndTime = null, 
-                                            Traveller = selectedPerson.Name, 
-                                            StarShip = selectedShip.Name, 
-                                            TotalSum = null 
-                                        };
+                                    DatabaseQueries.AddParkingToDB(selectedPerson, selectedShip);
 
-                                        db.Parkings.Add(parking);
-                                        db.SaveChanges();
-
-                                        Console.WriteLine("Your parking has started! Enjoy you stay at SpacePark.");
-                                        Console.WriteLine($"Traveller: {parking.Traveller}, Starship: {parking.StarShip}, StartTime: {parking.StartTime}");
-                                    }
                                 }
                                 else
                                 {
