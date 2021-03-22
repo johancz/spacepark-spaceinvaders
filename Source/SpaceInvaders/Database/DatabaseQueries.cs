@@ -40,6 +40,14 @@ namespace SpaceInvaders.Database
             }
         }
 
+        public static int OccupiedParkings()
+        {
+            using (var db = new MyContext())
+            {
+                return db.Parkings.Where(x => x.EndTime == null).Count();
+            }
+        }
+
         public static void EndParking(Person person)
         {
             using (var db = new MyContext())
