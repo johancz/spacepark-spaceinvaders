@@ -40,7 +40,7 @@ namespace SpaceInvaders
                     Console.WriteLine("Who are you traveller? ");
 
                     var peopleList = await Fetch.People(Console.ReadLine());
-
+                    
                     Console.WriteLine();
 
                     if (peopleList.Count == 0)
@@ -58,6 +58,14 @@ namespace SpaceInvaders
                         }
 
                         Person selectedPerson = peopleList[selectedMenuPerson];
+
+                        if (DatabaseQueries.CheckParking(selectedPerson.Name) != null)
+                        {
+                            Console.WriteLine("You have already parked\nPress any key to continue");
+                            Console.ReadKey();
+                            Console.Clear();
+                            continue;
+                        }
 
                         // Fetch all Starships
                         var allStarships = await Fetch.Starships();
@@ -97,8 +105,7 @@ namespace SpaceInvaders
                                     Console.ForegroundColor = ConsoleColor.White;
 
                                     //Add parking into database
-                                    DatabaseQueries.AddParkingToDB(selectedPerson, selectedShip);
-
+                                    DatabaseQueries.AddParking(selectedPerson, selectedShip);
                                 }
                                 else
                                 {
