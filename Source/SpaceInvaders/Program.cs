@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
 using System.Globalization;
-
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -124,7 +122,7 @@ namespace SpaceInvaders
         }
 
         //API for People
-        public static async Task<APIResponse> FetchDataPeople(string requestUrl)
+        public static async Task<APIResponseTraveller> FetchDataPeople(string requestUrl)
         {
             string baseUrl = "http://swapi.dev/api/";
             string resource = requestUrl.Substring(baseUrl.Length);
@@ -132,7 +130,7 @@ namespace SpaceInvaders
             var client = new RestClient("http://swapi.dev/api/");
             var request = new RestRequest(resource, DataFormat.Json);
 
-            return await client.GetAsync<APIResponse>(request);
+            return await client.GetAsync<APIResponseTraveller>(request);
         }
 
         //API for Starships
@@ -153,7 +151,7 @@ namespace SpaceInvaders
         {
             //Add to class list
             List<Person> persons = new List<Person>();
-            APIResponse response;
+            APIResponseTraveller response;
 
 
             //We use user input to search through the API for a Starwars character

@@ -10,10 +10,12 @@ namespace SpaceInvaders.Database
     class Parking
     {
         public int ID { get; set; }
-        public DateTime StartParking { get; set; }
+        public DateTime StartTime { get; set; }
+        public DateTime? EndTime { get; set; }
 
-        //IS-UNIQUE
+        //IS-UNIQUE IF END PARKING IS NULL
         public string Traveller { get; set; }
         public string StarShip { get; set; }
+        public decimal? TotalSum { get; set; }
     }
 }
