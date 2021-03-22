@@ -103,10 +103,18 @@ namespace SpaceInvaders
                     {
                         if (result <= _parkingLengthLimit)
                         {
+                            const int emptyParkinglots = 10;
+
+                            if (DatabaseQueries.OccupiedParkings() >= emptyParkinglots)
+                            {
+                                Console.WriteLine("Parkinglot is full, try again later.\n");
+                                continue;
+                            }
                             Console.ForegroundColor = ConsoleColor.Yellow;
                             Console.WriteLine($"You selected: {selectedShip.Name}, Length: {selectedShip.Length}m");
 
                             //Add parking into database
+
                             DatabaseQueries.AddParking(selectedPerson, selectedShip);
                             Console.ResetColor();
                         }
