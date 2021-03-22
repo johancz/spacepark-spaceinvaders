@@ -48,7 +48,7 @@ namespace SpaceInvaders
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("Sorry, you are not a Starwars character. Back to the void with ya!");
-                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.ResetColor();
                         continue; // Go back to the start menu.
                     }
 
@@ -81,13 +81,13 @@ namespace SpaceInvaders
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine($"There is no registered starship under the name of {selectedPerson.Name}.");
-                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.ResetColor();
                         continue; // Go back to the start menu.
                     }
 
                     Console.ForegroundColor = ConsoleColor.Yellow;
                     Console.WriteLine($"Welcome, {selectedPerson.Name}!\n");
-                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.ResetColor();
 
                     int selectedShipIndex = Menu.Options("Please select your ship", personalShips.Select(p => p.Name).ToArray());
                     Starships selectedShip = personalShips[selectedShipIndex];
@@ -104,7 +104,7 @@ namespace SpaceInvaders
                         {
                             Console.ForegroundColor = ConsoleColor.Yellow;
                             Console.WriteLine($"You selected: {selectedShip.Name}, Length: {selectedShip.Length}m");
-                            Console.ForegroundColor = ConsoleColor.White;
+                            Console.ResetColor();
 
                             //Add parking into database
                             DatabaseQueries.AddParking(selectedPerson, selectedShip);
@@ -113,7 +113,7 @@ namespace SpaceInvaders
                         {
                             Console.ForegroundColor = ConsoleColor.Red;
                             Console.WriteLine($"We're sorry but your {selectedShip.Name} is too big ({selectedShip.Length}m) for our parking lots. (Maximum length: 30m)");
-                            Console.ForegroundColor = ConsoleColor.White;
+                            Console.ResetColor();
                             //Do nothing as we cannot park the ship
                         }
                     }
@@ -130,7 +130,7 @@ namespace SpaceInvaders
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Terminating program.");
-                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.ResetColor();
                     break;
                 }
             }
