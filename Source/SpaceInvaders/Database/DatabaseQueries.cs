@@ -23,7 +23,7 @@ namespace SpaceInvaders.Database
                 };
 
                 db.Parkings.Add(parking);
-                db.SaveChanges();
+                //db.SaveChanges();
 
                 Console.WriteLine($"\n[PARKING DETAILS]\nTraveller: {parking.Traveller}, Starship: {parking.StarShip}, StartTime: {parking.StartTime}");
             }
