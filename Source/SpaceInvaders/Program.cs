@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+
 using System.Globalization;
+
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -25,7 +27,9 @@ namespace SpaceInvaders
                 int selectedMenu = ShowMenu("What do you want to do?", new[]
                 {
                     "Register new traveller", //Index 0
-                    "End a current parking", //Index 1
+
+                    "End current parking", //Index 1
+
                     "Exit program", //Index 2
                 });
                 Console.Clear();
@@ -35,6 +39,7 @@ namespace SpaceInvaders
                     Console.WriteLine("Who are you traveller? ");
 
                     var peopleList = await FetchPeople(Console.ReadLine());
+
                     Console.WriteLine();
 
                     if (peopleList.Count == 0)
@@ -149,9 +154,11 @@ namespace SpaceInvaders
             List<Person> persons = new List<Person>();
             APIResponse response;
 
+
             //We use user input to search through the API for a Starwars character
             string requestUrl = $"http://swapi.dev/api/people/?search={input}";
             Console.WriteLine("\nLoading...");
+
             while (requestUrl != null)
             {
                 response = await FetchDataPeople(requestUrl);
@@ -166,6 +173,7 @@ namespace SpaceInvaders
         {
             //Add to object list 
             List<Starships> starships = new List<Starships>();
+
             APIResponseStarships response;
             string requestUrl = "http://swapi.dev/api/starships/";
 
@@ -211,6 +219,7 @@ namespace SpaceInvaders
                         Console.BackgroundColor = ConsoleColor.Black;
                         Console.ForegroundColor = ConsoleColor.Cyan;
                     }
+                  
                     Console.WriteLine("- " + option);
                     Console.ResetColor();
                 }
