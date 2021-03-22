@@ -122,11 +122,6 @@ namespace SpaceInvaders
             }
         }
 
-        private static Task FetchPeople(string v)
-        {
-            throw new NotImplementedException();
-        }
-
         public static int ShowMenu(string prompt, string[] options)
         {
             if (options == null || options.Length == 0)
