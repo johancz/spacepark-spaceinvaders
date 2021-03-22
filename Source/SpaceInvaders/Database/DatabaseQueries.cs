@@ -35,15 +35,37 @@ namespace SpaceInvaders.Database
         {
             using (var db = new MyContext())
             {
-                 var activParking = db.Parkings.SingleOrDefault(x => x.Traveller == name && x.EndTime == null);
+                var activParking = db.Parkings.SingleOrDefault(x => x.Traveller == name && x.EndTime == null);
 
-                 return activParking;
+                return activParking;
             }
         }
 
-        public static void EndParking(Person person, Starships ship)
+        public static void EndParking(Person person)
         {
+            using (var db = new MyContext())
+            {
+                foreach (var parking in db.Parkings)
+                {
 
+                    var endParking = db.Parkings.SingleOrDefault(x => x.Traveller == person.Name);
+
+                    endParking.EndTime = DateTime.Now;
+
+                    var duration = endParking.EndTime - endParking.StartTime;
+
+                    if (duration.HasValue)
+                    {
+                        endParking.TotalSum = Convert.ToDecimal(duration.Value) * 10;
+                    }
+
+                    db.SaveChanges();
+                }
+
+
+                //Console.WriteLine(endParking.EndTime);
+
+            }
         }
     }
 }

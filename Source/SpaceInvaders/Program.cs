@@ -15,6 +15,8 @@ namespace SpaceInvaders
 {
     class Program
     {
+        public static Person selectedPerson;
+        public static Starships selectedShip;
         static async Task Main(string[] args)
         {
             //Added this line to Parse double values to not mix "." and ","
@@ -40,7 +42,7 @@ namespace SpaceInvaders
                     Console.WriteLine("Who are you traveller? ");
 
                     var peopleList = await Fetch.People(Console.ReadLine());
-                    
+
                     Console.WriteLine();
 
                     if (peopleList.Count == 0)
@@ -57,7 +59,7 @@ namespace SpaceInvaders
                             selectedMenuPerson = Menu.Options("Please select ", peopleList.Select(p => p.Name).ToArray());
                         }
 
-                        Person selectedPerson = peopleList[selectedMenuPerson];
+                        selectedPerson = peopleList[selectedMenuPerson];
 
                         if (DatabaseQueries.CheckParking(selectedPerson.Name) != null)
                         {
@@ -88,7 +90,7 @@ namespace SpaceInvaders
                             Console.ForegroundColor = ConsoleColor.White;
 
                             int selectedShipIndex = Menu.Options("Please select your ship", personalShips.Select(p => p.Name).ToArray());
-                            Starships selectedShip = personalShips[selectedShipIndex];
+                            selectedShip = personalShips[selectedShipIndex];
                             Console.WriteLine("\nLoading...");
                             Thread.Sleep(2000);
                             Console.Clear();
@@ -121,6 +123,37 @@ namespace SpaceInvaders
                 }
                 else if (selectedMenu == 1)
                 {
+                    //Console.WriteLine("Who are you traveller? ");
+
+                    //var peopleList = await Fetch.People(Console.ReadLine());
+
+                    //Console.WriteLine();
+
+                    //if (peopleList.Count == 0)
+                    //{
+                    //    Console.ForegroundColor = ConsoleColor.Red;
+                    //    Console.WriteLine("Sorry, you are not a Starwars character. Back to the void with ya!");
+                    //    Console.ForegroundColor = ConsoleColor.White;
+                    //}
+                    //else
+                    //{
+                    //    int selectedMenuPerson = 0;
+                    //    if (peopleList.Count > 1)
+                    //    {
+                    //        selectedMenuPerson = Menu.Options("Please select ", peopleList.Select(p => p.Name).ToArray());
+                    //    }
+
+                    //    selectedPerson = peopleList[selectedMenuPerson];
+
+                    //    if (DatabaseQueries.CheckParking(selectedPerson.Name) != null)
+                    //    {
+                    //        //Console.WriteLine("You have already parked\nPress any key to continue");
+                    //        //Console.ReadKey();
+                    //        //Console.Clear();
+                    //        //continue;
+                    //    }
+                    //}
+                    DatabaseQueries.EndParking(selectedPerson);
                     Console.WriteLine("Thank you for choosing SpacePark! We hope to see you soon again :)\n");
                     //METHOD: Print the Invoice to the traveller. Also add the totalSum into the database.
                 }
@@ -132,6 +165,6 @@ namespace SpaceInvaders
                     break;
                 }
             }
-        }      
+        }
     }
 }
