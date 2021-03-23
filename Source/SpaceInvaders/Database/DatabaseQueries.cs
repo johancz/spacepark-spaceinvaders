@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using SpaceInvaders.Objects;
+﻿using SpaceInvaders.Objects;
 using SpaceInvaders.Traveller;
+using System;
+using System.Linq;
+using System.Threading;
 
 namespace SpaceInvaders.Database
 {
@@ -20,10 +17,8 @@ namespace SpaceInvaders.Database
                     Traveller = person.Name,
                     StarShip = ship.Name,
                 };
-
                 db.Parkings.Add(parking);
                 db.SaveChanges();
-
                 Console.WriteLine($"\n[PARKING DETAILS]\nTraveller: {parking.Traveller}, Starship: {parking.StarShip}, StartTime: {parking.StartTime}");
             }
         }
@@ -33,7 +28,6 @@ namespace SpaceInvaders.Database
             using (var db = new MyContext())
             {
                 var activParking = db.Parkings.SingleOrDefault(x => x.Traveller == name && x.EndTime == null);
-
                 return activParking;
             }
         }
@@ -50,9 +44,7 @@ namespace SpaceInvaders.Database
         {
             using (var db = new MyContext())
             {
-
                 var endParking = db.Parkings.SingleOrDefault(x => x.Traveller == person.Name && x.EndTime == null);
-
                 if (endParking.EndTime != null)
                 {
                     Console.WriteLine("You have no active parkings.");
@@ -61,7 +53,6 @@ namespace SpaceInvaders.Database
                 endParking.EndTime = DateTime.Now;
 
                 var duration = endParking.EndTime - endParking.StartTime;
-
                 if (duration.HasValue)
                 {
                     endParking.TotalSum = Convert.ToDecimal(duration.Value.TotalMinutes) * 2;
