@@ -130,7 +130,7 @@ namespace SpaceInvaders
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("Sorry, you are not a Starwars character. Back to the void with ya!");
-                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.ResetColor();
                     }
                     else
                     {
