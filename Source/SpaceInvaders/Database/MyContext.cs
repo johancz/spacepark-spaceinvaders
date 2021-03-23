@@ -19,8 +19,8 @@ namespace SpaceInvaders.Database
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Parking>()
-                .Property(x => x.StartTime)
-                .HasDefaultValueSql("getdate()");
+                .Property(x => x.StartTime)                     
+                .HasDefaultValueSql("getdate()");           
         }
     }
 }
