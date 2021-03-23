@@ -39,6 +39,8 @@ namespace SpaceTest
                                                                  s1 => s1.URL, s2 => s2,
                                                                  (s1, s2) => s1).ToList();
 
+
+            //Assert.Equal("X-wing", personalShips.Select(x => x.Name).FirstOrDefault());
             Assert.Equal(2, personalShips.Count);
         }
 
