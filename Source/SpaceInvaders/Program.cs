@@ -1,21 +1,21 @@
+using SpaceInvaders.API;
+using SpaceInvaders.Database;
+using SpaceInvaders.Helpers;
+using SpaceInvaders.Objects;
+using SpaceInvaders.Traveller;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using RestSharp;
-using SpaceInvaders.Objects;
-using SpaceInvaders.Traveller;
-using SpaceInvaders.API;
-using SpaceInvaders.Helpers;
-using SpaceInvaders.Database;
 
 namespace SpaceInvaders
 {
     class Program
     {
-        private const double _parkingLengthLimit = 35;
+        private const double maxLengthToParkStarship = 35;
+        const int totalParkingLots = 5;
 
         static async Task Main(string[] args)
         {
@@ -30,9 +30,7 @@ namespace SpaceInvaders
                 int selectedMenu = Menu.Options("What do you want to do?", new[]
                 {
                     "Register new traveller", //Index 0
-
                     "End current parking", //Index 1
-
                     "Exit program", //Index 2
                 });
                 Console.Clear();
@@ -41,7 +39,6 @@ namespace SpaceInvaders
                 {
                     Console.WriteLine("Who are you traveller? ");
                     var peopleList = await Fetch.People(Console.ReadLine());
-                    //Console.WriteLine();
 
                     // If the person is not a Star Wars character, go back to the start menu
                     if (peopleList.Count == 0)
@@ -58,7 +55,6 @@ namespace SpaceInvaders
                         Console.WriteLine();
                         selectedMenuPerson = Menu.Options("Please select ", peopleList.Select(p => p.Name).ToArray());
                     }
-
                     Person selectedPerson = peopleList[selectedMenuPerson];
 
                     // If the person is already parked, go back to the start menu
@@ -96,25 +92,21 @@ namespace SpaceInvaders
                     Thread.Sleep(2000);
                     Console.Clear();
 
-                    // todo: SLÄNG IN NEDAN I FUNKTION
                     // We check if the starship fits in the parkinglot
                     // Parsing because the Length attribute is a String type
                     if (double.TryParse(selectedShip.Length, out double result))
                     {
-                        if (result <= _parkingLengthLimit)
-                        {
-                            const int emptyParkinglots = 10;
-
-                            if (DatabaseQueries.OccupiedParkings() >= emptyParkinglots)
+                        if (result <= maxLengthToParkStarship)
+                        { 
+                            if (DatabaseQueries.OccupiedParkings() >= totalParkingLots)
                             {
-                                Console.WriteLine("Parkinglot is full, try again later.\n");
+                                Console.WriteLine("Parking lot is full, try again later. PEACE!\n");
                                 continue;
                             }
                             Console.ForegroundColor = ConsoleColor.Yellow;
                             Console.WriteLine($"You selected: {selectedShip.Name}, Length: {selectedShip.Length}m");
 
                             //Add parking into database
-
                             DatabaseQueries.AddParking(selectedPerson, selectedShip);
                             Console.ResetColor();
                         }
@@ -123,19 +115,15 @@ namespace SpaceInvaders
                             Console.ForegroundColor = ConsoleColor.Red;
                             Console.WriteLine($"We're sorry but your {selectedShip.Name} is too big ({selectedShip.Length}m) for our parking lots. (Maximum length: 30m)");
                             Console.ResetColor();
-                            //Do nothing as we cannot park the ship
                         }
                     }
-                    // todo: felhantering om TryParse == false?
-
                     Console.WriteLine();
                 }
                 else if (selectedMenu == 1)
                 {
-                    Console.WriteLine("Who are you traveller? ");
+                    Console.WriteLine("Who is leaving our beautiful parking station? ");
 
                     var peopleList = await Fetch.People(Console.ReadLine());
-
                     Console.WriteLine();
 
                     if (peopleList.Count == 0)
@@ -152,9 +140,9 @@ namespace SpaceInvaders
                             selectedMenuPerson = Menu.Options("Please select ", peopleList.Select(p => p.Name).ToArray());
                             Console.WriteLine();
                         }
-
                         Person selectedPerson = peopleList[selectedMenuPerson];
 
+                        //If there is a active parking, see method CheckParking, then print InVoice.
                         if (DatabaseQueries.CheckParking(selectedPerson.Name) != null)
                         {
                             DatabaseQueries.EndParking(selectedPerson);
@@ -170,7 +158,6 @@ namespace SpaceInvaders
                             Thread.Sleep(3000);
                             Console.Clear();
                         }
-                        //METHOD: Print the Invoice to the traveller. Also add the totalSum into the database.
                     }
                 }
                 else
