@@ -13,12 +13,9 @@ namespace SpaceInvaders.Database
     {
         [Key]
         public int ID { get; set; }
-        //[DefaultValue("getdate()")] //Annotation 
         [Required]
         public DateTime StartTime { get; set; }
         public DateTime? EndTime { get; set; }
-
-        //IS-UNIQUE IF END PARKING IS NULL
         [Required]
         public string Traveller { get; set; }
         [Required]

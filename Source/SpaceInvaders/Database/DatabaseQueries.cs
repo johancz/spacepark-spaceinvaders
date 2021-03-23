@@ -13,8 +13,6 @@ namespace SpaceInvaders.Database
     {
         public static void AddParking(Person person, Starships ship)
         {
-
-
             using (var db = new MyContext())
             {
                 var parking = new Parking()
@@ -57,7 +55,7 @@ namespace SpaceInvaders.Database
 
                 if (endParking.EndTime != null)
                 {
-                    Console.WriteLine("You have not parked.");
+                    Console.WriteLine("You have no active parkings.");
                     return;
                 }
                 endParking.EndTime = DateTime.Now;
@@ -68,7 +66,6 @@ namespace SpaceInvaders.Database
                 {
                     endParking.TotalSum = Convert.ToDecimal(duration.Value.TotalMinutes) * 2;
                 }
-
                 db.SaveChanges();
 
                 Thread.Sleep(2000);
