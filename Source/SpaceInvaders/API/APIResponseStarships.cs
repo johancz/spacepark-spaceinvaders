@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using SpaceInvaders.Objects;
+using System.Collections.Generic;
 
-
-namespace SpaceInvaders.Objects
+namespace SpaceInvaders.API
 {
     public class APIResponseStarships
     {

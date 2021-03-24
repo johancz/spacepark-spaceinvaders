@@ -2,7 +2,6 @@ using SpaceInvaders.API;
 using SpaceInvaders.Database;
 using SpaceInvaders.Helpers;
 using SpaceInvaders.Objects;
-using SpaceInvaders.Traveller;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -37,8 +36,11 @@ namespace SpaceInvaders
 
                 if (selectedMenu == 0)
                 {
-                    Console.WriteLine("Who are you traveller? ");
-                    var peopleList = await Fetch.People(Console.ReadLine());
+                    string input = getInput("Who are you traveller?");
+
+                    Console.WriteLine("Loading...");
+
+                    var peopleList = await Fetch.People(input);
 
                     // If the person is not a Star Wars character, go back to the start menu
                     if (peopleList.Count == 0)
@@ -97,7 +99,7 @@ namespace SpaceInvaders
                     if (double.TryParse(selectedShip.Length, out double result))
                     {
                         if (result <= maxLengthToParkStarship)
-                        { 
+                        {
                             if (DatabaseQueries.OccupiedParkings() >= totalParkingLots)
                             {
                                 Console.WriteLine("Parking lot is full, try again later. PEACE!\n");
@@ -121,9 +123,11 @@ namespace SpaceInvaders
                 }
                 else if (selectedMenu == 1)
                 {
-                    Console.WriteLine("Who is leaving our beautiful parking station? ");
+                    string input = getInput("Who is leaving our beautiful parking station?");
 
-                    var peopleList = await Fetch.People(Console.ReadLine());
+                    Console.WriteLine("Loading...");
+
+                    var peopleList = await Fetch.People(input);
                     Console.WriteLine();
 
                     if (peopleList.Count == 0)
@@ -168,6 +172,18 @@ namespace SpaceInvaders
                     break;
                 }
             }
+        }
+
+        private static string getInput(string prompt)
+        {
+            string input = "";
+            while (input == "")
+            {
+                Console.WriteLine($"{prompt} (enter at least one character)");
+                input = Console.ReadLine();
+                Console.Clear();
+            }
+            return input;
         }
     }
 }

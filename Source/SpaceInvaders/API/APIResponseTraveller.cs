@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using SpaceInvaders.Objects;
+using System.Collections.Generic;
 
-namespace SpaceInvaders.Traveller
+namespace SpaceInvaders.API
 {
     public class APIResponseTraveller
     {
