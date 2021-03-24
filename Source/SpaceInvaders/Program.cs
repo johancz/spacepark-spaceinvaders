@@ -54,7 +54,7 @@ namespace SpaceInvaders
                     int selectedMenuPerson = 0;
                     if (peopleList.Count > 1)
                     {
-                        Console.WriteLine();
+                        Console.Clear();
                         selectedMenuPerson = Menu.Options("Please select ", peopleList.Select(p => p.Name).ToArray());
                     }
                     Person selectedPerson = peopleList[selectedMenuPerson];
@@ -126,9 +126,11 @@ namespace SpaceInvaders
                     string input = getInput("Who is leaving our beautiful parking station?");
 
                     Console.WriteLine("Loading...");
+                    Thread.Sleep(2000);
+                    Console.Clear();
 
                     var peopleList = await Fetch.People(input);
-                    Console.WriteLine();
+                    //Console.WriteLine();
 
                     if (peopleList.Count == 0)
                     {
