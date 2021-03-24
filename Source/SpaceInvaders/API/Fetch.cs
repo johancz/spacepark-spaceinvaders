@@ -3,8 +3,6 @@ using SpaceInvaders.Objects;
 using SpaceInvaders.Traveller;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SpaceInvaders.API
@@ -32,7 +30,6 @@ namespace SpaceInvaders.API
                 persons.AddRange(response.Results);
                 requestUrl = response.Next;
             }
-
             return persons;
         }
 
@@ -53,9 +50,7 @@ namespace SpaceInvaders.API
                 starships.AddRange(response.Results);
                 requestUrl = response.Next;
             }
-
             return starships;
         }
-
     }
 }
