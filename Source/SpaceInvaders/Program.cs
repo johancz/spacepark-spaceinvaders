@@ -149,6 +149,8 @@ namespace SpaceInvaders
                         if (DatabaseQueries.CheckParking(selectedPerson.Name) != null)
                         {
                             DatabaseQueries.EndParking(selectedPerson);
+                            Console.WriteLine("Press any key..");
+                            Console.ReadKey();
                             Console.WriteLine("\nThank you for choosing SpacePark! We hope to see you soon again :)\n");
                             Console.WriteLine("Returning to main menu..");
                             Thread.Sleep(4000);

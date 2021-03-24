@@ -1,14 +1,11 @@
-using System;
-using Xunit;
-using SpaceInvaders;
-using SpaceInvaders.Database;
 using SpaceInvaders.API;
+using SpaceInvaders.Database;
 using SpaceInvaders.Objects;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
+using System;
 using System.Collections.Generic;
-using SpaceInvaders.Traveller;
+using System.Linq;
 using System.Threading;
+using Xunit;
 
 namespace SpaceTest
 {
@@ -42,7 +39,6 @@ namespace SpaceTest
                                                                  s1 => s1.URL, s2 => s2,
                                                                  (s1, s2) => s1).ToList();
 
-            //Assert.Equal("X-wing", personalShips.Select(x => x.Name).FirstOrDefault());
             Assert.Equal(2, personalShips.Count);
         }
 
@@ -70,7 +66,7 @@ namespace SpaceTest
                 var result = db.Parkings.Where(x => x.Traveller == parking.Traveller).OrderBy(x => x.EndTime).LastOrDefault();
 
                 Assert.Equal(0.34m, Math.Round(
-                    result.TotalSum.Value,2));
+                    result.TotalSum.Value,3));
 
                 db.Remove(result);
                 db.SaveChanges();
@@ -97,16 +93,5 @@ namespace SpaceTest
                 db.SaveChanges();
             }
         }
-
-
-
-        //personalShips.Select(p => p.Name).ToArray()
-
-        // Arrange 
-
-        //using (var db = new MyContext())
-        //{
-        //    db.Parkings.SingleOrDefault(x => x.Traveller == person.Name && x.EndTime == null);
-        //}
     }
 }
