@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace SpaceInvaders.Traveller
+namespace SpaceInvaders.Objects
 {
     public class Person
     {
