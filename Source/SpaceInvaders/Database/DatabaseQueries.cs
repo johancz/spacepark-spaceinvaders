@@ -63,10 +63,13 @@ namespace SpaceInvaders.Database
 
                 Console.WriteLine("Calculating price..\n");
                 Thread.Sleep(2000);
+                Console.WriteLine($"Start time: {endParking.StartTime}\nEnd time: {endParking.EndTime}");
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("Total price: " + Math.Round(endParking.TotalSum.Value, 2) + " credits");
+                Console.WriteLine("Total price: " + Math.Round(endParking.TotalSum.Value, 2) + " credits\n");
                 Console.ResetColor();
                 Thread.Sleep(2000);
+                Console.WriteLine("Press any key..");
+                Console.ReadKey();
             }
         }
     }
