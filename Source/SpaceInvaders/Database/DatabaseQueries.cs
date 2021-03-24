@@ -68,8 +68,6 @@ namespace SpaceInvaders.Database
                 Console.WriteLine("Total price: " + Math.Round(endParking.TotalSum.Value, 2) + " credits\n");
                 Console.ResetColor();
                 Thread.Sleep(2000);
-                Console.WriteLine("Press any key..");
-                Console.ReadKey();
             }
         }
     }
