@@ -44,8 +44,9 @@ namespace SpaceInvaders
                     // If the person is not a Star Wars character, go back to the start menu
                     if (peopleList.Count == 0)
                     {
+                        Console.Clear();
                         Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine("Sorry, you are not a Starwars character. Back to the void with ya!");
+                        Console.WriteLine("Sorry, you are not a Starwars character. Back to the void with ya!\n");
                         Console.ResetColor();
                         continue; // Go back to the start menu.
                     }
@@ -131,7 +132,7 @@ namespace SpaceInvaders
                     if (peopleList.Count == 0)
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine("Sorry, you are not a Starwars character. Back to the void with ya!");
+                        Console.WriteLine("Sorry, you are not a Starwars character. Back to the void with ya!\n");
                         Console.ResetColor();
                     }
                     else
