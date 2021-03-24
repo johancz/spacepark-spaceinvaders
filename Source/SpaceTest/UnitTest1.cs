@@ -43,12 +43,13 @@ namespace SpaceTest
         }
 
         [Fact]
-        public void When_Inserting_ParkingData_In_Database_Expect_AnakinSkywalker_ParkingPrice()
+        public void When_Inserting_ParkingData_In_Database_Expect_AnakinSkywalker_ParkingPrice_10sec()
         {
-            var parking = new Parking()
+             var parking = new Parking()
             {
                 Traveller = "Anakin Skywalker",
                 StarShip = "Naboo fighter",
+                StartTime = DateTime.Now.AddSeconds(-10)
             };
             var person = Fetch.People("Anakin");
 
@@ -58,7 +59,6 @@ namespace SpaceTest
                 db.SaveChanges();
             }
 
-            Thread.Sleep(10000); // Duration between starttime and endtime.
             DatabaseQueries.EndParking(person.Result.SingleOrDefault());
 
             using (var db = new MyContext())
@@ -66,12 +66,75 @@ namespace SpaceTest
                 var result = db.Parkings.Where(x => x.Traveller == parking.Traveller).OrderBy(x => x.EndTime).LastOrDefault();
 
                 Assert.Equal(0.34m, Math.Round(
-                    result.TotalSum.Value,3));
+                    result.TotalSum.Value,2));
 
                 db.Remove(result);
                 db.SaveChanges();
             }
         }
+
+        [Fact]
+        public void When_Inserting_ParkingData_In_Database_Expect_AnakinSkywalker_ParkingPrice_1h()
+        {
+            var parking = new Parking()
+            {
+                Traveller = "Anakin Skywalker",
+                StarShip = "Naboo fighter",
+                StartTime = DateTime.Now.AddHours(-1)
+            };
+            var person = Fetch.People("Anakin");
+
+            using (var db = new MyContext())
+            {
+                db.Parkings.Add(parking);
+                db.SaveChanges();
+            }
+
+            DatabaseQueries.EndParking(person.Result.SingleOrDefault());
+
+            using (var db = new MyContext())
+            {
+                var result = db.Parkings.Where(x => x.Traveller == parking.Traveller).OrderBy(x => x.EndTime).LastOrDefault();
+
+                Assert.Equal(120m, 
+                    result.TotalSum.Value, 1);
+
+                db.Remove(result);
+                db.SaveChanges();
+            }
+        }
+
+        [Fact]
+        public void When_Inserting_ParkingData_In_Database_Expect_AnakinSkywalker_ParkingPrice_1day1h()
+        {
+            var parking = new Parking()
+            {
+                Traveller = "Anakin Skywalker",
+                StarShip = "Naboo fighter",
+                StartTime = DateTime.Now.AddDays(-1).AddHours(-1)
+            };
+            var person = Fetch.People("Anakin");
+
+            using (var db = new MyContext())
+            {
+                db.Parkings.Add(parking);
+                db.SaveChanges();
+            }
+
+            DatabaseQueries.EndParking(person.Result.SingleOrDefault());
+
+            using (var db = new MyContext())
+            {
+                var result = db.Parkings.Where(x => x.Traveller == parking.Traveller).OrderBy(x => x.EndTime).LastOrDefault();
+
+                Assert.Equal(3000m, 
+                    result.TotalSum.Value, 1);
+
+                db.Remove(result);
+                db.SaveChanges();
+            }
+        }
+
 
         [Fact]
         public void When_Inserting_ParkingData_In_Database_Expect_LukeSkywalker_Starttime()
