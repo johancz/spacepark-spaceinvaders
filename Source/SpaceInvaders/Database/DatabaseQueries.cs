@@ -57,7 +57,7 @@ namespace SpaceInvaders.Database
                 var duration = endParking.EndTime - endParking.StartTime;
                 if (duration.HasValue)
                 {
-                    endParking.TotalSum = Convert.ToDecimal(duration.Value.TotalMinutes) * 2;
+                    endParking.TotalSum = Convert.ToDecimal(duration.Value.TotalMinutes) * 2; // cost = 2 credits / minute
                 }
                 db.SaveChanges();
 
