@@ -36,28 +36,13 @@ namespace SpaceInvaders
 
                 if (selectedMenu == 0)
                 {
-                    string input = getInput("Who are you traveller?");
-                    Console.WriteLine("Loading...");
 
-                    var peopleList = await Fetch.People(input);
+                    var selectedPerson = ChoosePerson("Who are you traveller?").Result;
 
-                    // If the person is not a Star Wars character, go back to the start menu
-                    if (peopleList.Count == 0)
+                    if (selectedPerson == null)
                     {
-                        Console.Clear();
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine("Sorry, you are not a Starwars character. Back to the void with ya!\n");
-                        Console.ResetColor();
                         continue; // Go back to the start menu.
                     }
-
-                    int selectedMenuPerson = 0;
-                    if (peopleList.Count > 1)
-                    {
-                        Console.Clear();
-                        selectedMenuPerson = Menu.Options("Please select ", peopleList.Select(p => p.Name).ToArray());
-                    }
-                    Person selectedPerson = peopleList[selectedMenuPerson];
 
                     // If the person is already parked, go back to the start menu
                     if (DatabaseQueries.CheckParking(selectedPerson.Name) != null)
@@ -123,48 +108,33 @@ namespace SpaceInvaders
                 }
                 else if (selectedMenu == 1)
                 {
-                    string input = getInput("Who is leaving our beautiful parking station?");
-                    Console.WriteLine("Loading...");
+                    var selectedPerson = ChoosePerson("Who is leaving our beautiful parking station?").Result;
 
-                    var peopleList = await Fetch.People(input);             
-                    Console.Clear();
-
-                    if (peopleList.Count == 0)
+                    if (selectedPerson == null)
                     {
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine("Sorry, you are not a Starwars character. Back to the void with ya!\n");
-                        Console.ResetColor();
+                        continue; // Go back to the start menu.
+                    }
+
+                    //If there is a active parking, see method CheckParking, then print InVoice.
+                    if (DatabaseQueries.CheckParking(selectedPerson.Name) != null)
+                    {
+                        DatabaseQueries.EndParking(selectedPerson);
+                        Console.WriteLine("Press any key..");
+                        Console.ReadKey();
+                        Console.WriteLine("\nThank you for choosing SpacePark! We hope to see you soon again :)\n");
+                        Console.WriteLine("Returning to main menu..");
+                        Thread.Sleep(4000);
+                        Console.Clear();
                     }
                     else
                     {
-                        int selectedMenuPerson = 0;
-                        if (peopleList.Count > 1)
-                        {
-                            selectedMenuPerson = Menu.Options("Please select ", peopleList.Select(p => p.Name).ToArray());
-                            Console.WriteLine();
-                        }
-                        Person selectedPerson = peopleList[selectedMenuPerson];
-
-                        //If there is a active parking, see method CheckParking, then print InVoice.
-                        if (DatabaseQueries.CheckParking(selectedPerson.Name) != null)
-                        {
-                            DatabaseQueries.EndParking(selectedPerson);
-                            Console.WriteLine("Press any key..");
-                            Console.ReadKey();
-                            Console.WriteLine("\nThank you for choosing SpacePark! We hope to see you soon again :)\n");
-                            Console.WriteLine("Returning to main menu..");
-                            Thread.Sleep(4000);
-                            Console.Clear();
-                        }
-                        else
-                        {
-                            Console.WriteLine("There is no current parking under the name: " + selectedPerson.Name + "\n");
-                            Console.WriteLine("Returning to main menu..");
-                            Thread.Sleep(3000);
-                            Console.Clear();
-                        }
+                        Console.WriteLine("There is no current parking under the name: " + selectedPerson.Name + "\n");
+                        Console.WriteLine("Returning to main menu..");
+                        Thread.Sleep(3000);
+                        Console.Clear();
                     }
                 }
+
                 else
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
@@ -175,7 +145,7 @@ namespace SpaceInvaders
             }
         }
 
-        private static string getInput(string prompt)
+        private async static Task<Person> ChoosePerson(string prompt)
         {
             string input = "";
             while (input == "")
@@ -184,7 +154,29 @@ namespace SpaceInvaders
                 input = Console.ReadLine();
                 Console.Clear();
             }
-            return input;
+
+            Console.WriteLine("Loading...");
+            var peopleList = await Fetch.People(input);
+            Console.Clear();
+
+            // If the person is not a Star Wars character, go back to the start menu
+            if (peopleList.Count == 0)
+            {
+                Console.Clear();
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Sorry, you are not a Starwars character. Back to the void with ya!\n");
+                Console.ResetColor();
+                return null;
+            }
+
+            int selectedMenuPerson = 0;
+            if (peopleList.Count > 1)
+            {
+                Console.Clear();
+                selectedMenuPerson = Menu.Options("Please select ", peopleList.Select(p => p.Name).ToArray());
+            }
+
+            return peopleList[selectedMenuPerson];
         }
     }
 }
