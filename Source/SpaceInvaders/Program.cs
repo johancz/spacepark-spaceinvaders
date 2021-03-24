@@ -37,7 +37,6 @@ namespace SpaceInvaders
                 if (selectedMenu == 0)
                 {
                     string input = getInput("Who are you traveller?");
-
                     Console.WriteLine("Loading...");
 
                     var peopleList = await Fetch.People(input);
@@ -124,13 +123,10 @@ namespace SpaceInvaders
                 else if (selectedMenu == 1)
                 {
                     string input = getInput("Who is leaving our beautiful parking station?");
-
                     Console.WriteLine("Loading...");
-                    Thread.Sleep(2000);
-                    Console.Clear();
 
-                    var peopleList = await Fetch.People(input);
-                    //Console.WriteLine();
+                    var peopleList = await Fetch.People(input);             
+                    Console.Clear();
 
                     if (peopleList.Count == 0)
                     {

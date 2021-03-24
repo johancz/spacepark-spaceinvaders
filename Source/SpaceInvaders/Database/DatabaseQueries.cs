@@ -58,7 +58,6 @@ namespace SpaceInvaders.Database
                 }
                 db.SaveChanges();
 
-                Thread.Sleep(2000);
                 Console.WriteLine("Calculating price..\n");
                 Thread.Sleep(2000);
                 Console.ForegroundColor = ConsoleColor.Green;
