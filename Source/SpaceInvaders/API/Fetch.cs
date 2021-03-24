@@ -9,20 +9,24 @@ namespace SpaceInvaders.API
     public static class Fetch
     {
         private const string _baseURL = "http://swapi.dev/api/";
+        private struct RequestURLs
+        {
+            internal static string People = "http://swapi.dev/api/people/";
+            internal static string Starships = "http://swapi.dev/api/starships/";
+        }
 
-        //Fetch people from API
-        public static async Task<List<Person>> People(string input)
+        // Generic method for fetching data from the API (swapi.com)
+        public static async Task<List<T>> Data<T>(string requestUrl)
         {
             var client = new RestClient(_baseURL);
-            string requestUrl = $"http://swapi.dev/api/people/?search={input}";
-            APIResponse<Person> response;
-            List<Person> persons = new List<Person>();
+            APIResponse<T> response;
+            List<T> persons = new List<T>();
 
             while (requestUrl != null)
             {
                 string resource = requestUrl.Substring(_baseURL.Length);
                 var request = new RestRequest(resource, DataFormat.Json);
-                response = await client.GetAsync<APIResponse<Person>>(request);
+                response = await client.GetAsync<APIResponse<T>>(request);
 
                 persons.AddRange(response.Results);
                 requestUrl = response.Next;
@@ -30,24 +34,22 @@ namespace SpaceInvaders.API
             return persons;
         }
 
-        //Fetch Starships from API
-        public static async Task<List<Starships>> Starships()
+        //Fetch people from API
+        public static Task<List<Person>> People(string input)
         {
-            var client = new RestClient(_baseURL);
-            string requestUrl = "http://swapi.dev/api/starships/";
-            APIResponse<Starships> response;
-            List<Starships> starships = new List<Starships>();
-
-            while (requestUrl != null)
+            string requestUrl = RequestURLs.People;
+            if (input != null)
             {
-                string resource = requestUrl.Substring(_baseURL.Length);
-                var request = new RestRequest(resource, DataFormat.Json);
-                response = await client.GetAsync<APIResponse<Starships>>(request);
-
-                starships.AddRange(response.Results);
-                requestUrl = response.Next;
+                requestUrl += $"?search={input}";
             }
-            return starships;
+
+            return Fetch.Data<Person>(requestUrl);
+        }
+
+        //Fetch Starships from API
+        public static Task<List<Starships>> Starships()
+        {
+            return Fetch.Data<Starships>(RequestURLs.Starships);
         }
     }
 }
