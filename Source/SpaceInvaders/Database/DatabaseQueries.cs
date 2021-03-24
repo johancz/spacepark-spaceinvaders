@@ -24,11 +24,13 @@ namespace SpaceInvaders.Database
 
         public static Parking CheckParking(string name)
         {
+            Parking activParking = null;
             using (var db = new MyContext())
             {
-                var activParking = db.Parkings.SingleOrDefault(x => x.Traveller == name && x.EndTime == null);
-                return activParking;
+                activParking = db.Parkings.SingleOrDefault(x => x.Traveller == name && x.EndTime == null);
             }
+
+            return activParking;
         }
 
         public static int OccupiedParkings()
@@ -44,7 +46,8 @@ namespace SpaceInvaders.Database
             using (var db = new MyContext())
             {
                 var endParking = db.Parkings.SingleOrDefault(x => x.Traveller == person.Name && x.EndTime == null);
-                if (endParking.EndTime != null)
+
+                if (endParking == null || endParking.EndTime != null)
                 {
                     Console.WriteLine("You have no active parkings.");
                     return;
