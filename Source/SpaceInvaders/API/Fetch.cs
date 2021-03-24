@@ -1,10 +1,7 @@
 ﻿using RestSharp;
 using SpaceInvaders.Objects;
-using SpaceInvaders.Traveller;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SpaceInvaders.API
@@ -16,8 +13,6 @@ namespace SpaceInvaders.API
         //Fetch people from API
         public static async Task<List<Person>> People(string input)
         {
-            Console.WriteLine("\nLoading...");
-
             var client = new RestClient(_baseURL);
             string requestUrl = $"http://swapi.dev/api/people/?search={input}";
             APIResponseTraveller response;
@@ -32,7 +27,6 @@ namespace SpaceInvaders.API
                 persons.AddRange(response.Results);
                 requestUrl = response.Next;
             }
-
             return persons;
         }
 
@@ -53,9 +47,7 @@ namespace SpaceInvaders.API
                 starships.AddRange(response.Results);
                 requestUrl = response.Next;
             }
-
             return starships;
         }
-
     }
 }

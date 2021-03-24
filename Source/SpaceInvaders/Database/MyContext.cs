@@ -1,9 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SpaceInvaders.Database
 {
@@ -19,8 +14,8 @@ namespace SpaceInvaders.Database
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Parking>()
-                .Property(x => x.StartTime)                     
-                .HasDefaultValueSql("getdate()");           
+                .Property(x => x.StartTime)
+                .HasDefaultValueSql("getdate()");
         }
     }
 }

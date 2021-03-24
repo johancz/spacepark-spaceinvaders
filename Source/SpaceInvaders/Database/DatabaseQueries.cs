@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using SpaceInvaders.Objects;
+using System;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using SpaceInvaders.Objects;
-using SpaceInvaders.Traveller;
 
 namespace SpaceInvaders.Database
 {
@@ -20,10 +16,8 @@ namespace SpaceInvaders.Database
                     Traveller = person.Name,
                     StarShip = ship.Name,
                 };
-
                 db.Parkings.Add(parking);
                 db.SaveChanges();
-
                 Console.WriteLine($"\n[PARKING DETAILS]\nTraveller: {parking.Traveller}, Starship: {parking.StarShip}, StartTime: {parking.StartTime}");
             }
         }
@@ -51,9 +45,7 @@ namespace SpaceInvaders.Database
         {
             using (var db = new MyContext())
             {
-
                 var endParking = db.Parkings.SingleOrDefault(x => x.Traveller == person.Name && x.EndTime == null);
-
 
                 if (endParking == null || endParking.EndTime != null)
                 {
@@ -63,17 +55,17 @@ namespace SpaceInvaders.Database
                 endParking.EndTime = DateTime.Now;
 
                 var duration = endParking.EndTime - endParking.StartTime;
-
                 if (duration.HasValue)
                 {
                     endParking.TotalSum = Convert.ToDecimal(duration.Value.TotalMinutes) * 2;
                 }
                 db.SaveChanges();
 
-                Thread.Sleep(2000);
                 Console.WriteLine("Calculating price..\n");
                 Thread.Sleep(2000);
-                Console.WriteLine("Total price: " + Math.Round(endParking.TotalSum.Value, 2) + " space coins");
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("Total price: " + Math.Round(endParking.TotalSum.Value, 2) + " credits");
+                Console.ResetColor();
                 Thread.Sleep(2000);
             }
         }

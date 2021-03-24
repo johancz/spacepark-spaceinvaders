@@ -1,10 +1,7 @@
-﻿using System;
+﻿using SpaceInvaders.Objects;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace SpaceInvaders.Objects
+namespace SpaceInvaders.API
 {
     public class APIResponseStarships
     {

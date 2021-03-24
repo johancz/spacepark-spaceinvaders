@@ -39,3 +39,16 @@ Vi ska utveckla åt `SpacePark`.
 **Vi behöver även lägga till en `Invoice` eller `Receipt` tabell.**
 
 ![!!!The image resource is missing!!!](SpacePark_DatabaseTableExample.png)
+
+
+## Update Database
+
+We have made some changes in our database. As a starting point, we wanted to create tables with relationships between them. But after a few discussions, we figured that such complexity is not needed. Therefore, we decided to work with one table where the EndTime determines if a parking is active or not. If the EndTime column is null, then the parking is currently active. If not, then the parking is finished. Once the parking is finished and the Traveller is leaving, we will also add the totalSum to the table where the price is calculated based upon the travellers StartTime and Endtime (totalSum = StartTime – EndTime). We calculate the MINUTE value where the total price is the difference in minutes between StartTime and EndTime x 2.   
+
+_How the database table looks now:_
+
+![!!!The image resource is missing!!!](Table.png)
+
+_Data from the database table. All EndTime/TotalSum columns that contains ‘NULL’ is currently active parkings. The others are finished and paid for:_
+
+![!!!The image resource is missing!!!](TableDetails.png)
