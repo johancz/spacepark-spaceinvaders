@@ -70,11 +70,11 @@ namespace SpaceInvaders.Database
                 }
                 db.SaveChanges();
 
-                //Thread.Sleep(2000);
-                //Console.WriteLine("Calculating price..\n");
-                //Thread.Sleep(2000);
-                //Console.WriteLine("Total price: " + Math.Round(endParking.TotalSum.Value, 2) + " space coins");
-                //Thread.Sleep(2000);
+                Thread.Sleep(2000);
+                Console.WriteLine("Calculating price..\n");
+                Thread.Sleep(2000);
+                Console.WriteLine("Total price: " + Math.Round(endParking.TotalSum.Value, 2) + " space coins");
+                Thread.Sleep(2000);
             }
         }
     }
