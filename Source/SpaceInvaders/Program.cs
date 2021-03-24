@@ -14,7 +14,7 @@ namespace SpaceInvaders
     class Program
     {
         private const double maxLengthToParkStarship = 35;
-        const int totalParkingLots = 5;
+        private const int totalParkingLots = 5;
 
         static async Task Main(string[] args)
         {
@@ -34,7 +34,7 @@ namespace SpaceInvaders
                 });
                 Console.Clear();
 
-                if (selectedMenu == 0)
+                if (selectedMenu == 0) // menu option: Register new traveller
                 {
 
                     var selectedPerson = ChoosePerson("Who are you traveller?").Result;
@@ -106,7 +106,7 @@ namespace SpaceInvaders
                     }
                     Console.WriteLine();
                 }
-                else if (selectedMenu == 1)
+                else if (selectedMenu == 1) // menu option: End current parking
                 {
                     var selectedPerson = ChoosePerson("Who is leaving our beautiful parking station?").Result;
 
@@ -119,27 +119,24 @@ namespace SpaceInvaders
                     if (DatabaseQueries.CheckParking(selectedPerson.Name) != null)
                     {
                         DatabaseQueries.EndParking(selectedPerson);
-                        Console.WriteLine("Press any key..");
-                        Console.ReadKey();
                         Console.WriteLine("\nThank you for choosing SpacePark! We hope to see you soon again :)\n");
-                        Console.WriteLine("Returning to main menu..");
-                        Thread.Sleep(4000);
+                        Console.WriteLine("Press any key to return to the main menu...");
+                        Console.ReadKey();
                         Console.Clear();
                     }
                     else
                     {
                         Console.WriteLine("There is no current parking under the name: " + selectedPerson.Name + "\n");
-                        Console.WriteLine("Returning to main menu..");
-                        Thread.Sleep(3000);
+                        Console.WriteLine("Press any key to return to the main menu...");
+                        Console.ReadKey();
                         Console.Clear();
                     }
                 }
-
-                else
+                else // menu option: Exit program
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Terminating program.");
-                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.ResetColor();
                     break;
                 }
             }
