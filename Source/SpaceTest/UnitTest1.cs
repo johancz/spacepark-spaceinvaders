@@ -16,7 +16,6 @@ namespace SpaceTest
         public void When_Searching_Contains_SearchWord()
         {
             var result = Fetch.People("Sky");
-
             Assert.Equal(3, result.Result.Count);
         }
 
@@ -24,7 +23,6 @@ namespace SpaceTest
         public void When_Calling_FetchStarship_Expect_All_Starships_OfType_Result()
         {
             var result = Fetch.Starships();
-
             Assert.Equal(36, result.Result.Count);
         }
 
@@ -49,7 +47,7 @@ namespace SpaceTest
             {
                 Traveller = "Anakin Skywalker",
                 StarShip = "Naboo fighter",
-                StartTime = DateTime.Now.AddSeconds(-10)
+                StartTime = DateTime.Now.AddMinutes(-1)
             };
             var person = Fetch.People("Anakin");
 
@@ -65,8 +63,7 @@ namespace SpaceTest
             {
                 var result = db.Parkings.Where(x => x.Traveller == parking.Traveller).OrderBy(x => x.EndTime).LastOrDefault();
 
-                Assert.Equal(0.34m, Math.Round(
-                    result.TotalSum.Value,2));
+                Assert.Equal(2m, result.TotalSum.Value, 1);
 
                 db.Remove(result);
                 db.SaveChanges();
@@ -96,8 +93,7 @@ namespace SpaceTest
             {
                 var result = db.Parkings.Where(x => x.Traveller == parking.Traveller).OrderBy(x => x.EndTime).LastOrDefault();
 
-                Assert.Equal(120m, 
-                    result.TotalSum.Value, 1);
+                Assert.Equal(120m, result.TotalSum.Value, 1);
 
                 db.Remove(result);
                 db.SaveChanges();
@@ -127,8 +123,7 @@ namespace SpaceTest
             {
                 var result = db.Parkings.Where(x => x.Traveller == parking.Traveller).OrderBy(x => x.EndTime).LastOrDefault();
 
-                Assert.Equal(3000m, 
-                    result.TotalSum.Value, 1);
+                Assert.Equal(3000m, result.TotalSum.Value, 1);
 
                 db.Remove(result);
                 db.SaveChanges();
