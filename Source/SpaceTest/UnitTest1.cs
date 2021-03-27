@@ -41,7 +41,7 @@ namespace SpaceTest
         }
 
         [Fact]
-        public void When_Inserting_ParkingData_In_Database_Expect_AnakinSkywalker_ParkingPrice_10sec()
+        public void When_Inserting_ParkingData_In_Database_Expect_AnakinSkywalker_ParkingPrice_1min()
         {
              var parking = new Parking()
             {
