@@ -4,7 +4,6 @@ using SpaceInvaders.Objects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using Xunit;
 
 namespace SpaceTest
@@ -16,7 +15,6 @@ namespace SpaceTest
         public void When_Searching_Contains_SearchWord()
         {
             var result = Fetch.People("Sky");
-
             Assert.Equal(3, result.Result.Count);
         }
 
@@ -24,7 +22,6 @@ namespace SpaceTest
         public void When_Calling_FetchStarship_Expect_All_Starships_OfType_Result()
         {
             var result = Fetch.Starships();
-
             Assert.Equal(36, result.Result.Count);
         }
 
@@ -43,13 +40,13 @@ namespace SpaceTest
         }
 
         [Fact]
-        public void When_Inserting_ParkingData_In_Database_Expect_AnakinSkywalker_ParkingPrice_10sec()
+        public void When_Inserting_ParkingData_In_Database_Expect_AnakinSkywalker_ParkingPrice_1min()
         {
              var parking = new Parking()
             {
                 Traveller = "Anakin Skywalker",
                 StarShip = "Naboo fighter",
-                StartTime = DateTime.Now.AddSeconds(-10)
+                StartTime = DateTime.Now.AddMinutes(-1)
             };
             var person = Fetch.People("Anakin");
 
@@ -65,8 +62,7 @@ namespace SpaceTest
             {
                 var result = db.Parkings.Where(x => x.Traveller == parking.Traveller).OrderBy(x => x.EndTime).LastOrDefault();
 
-                Assert.Equal(0.34m, Math.Round(
-                    result.TotalSum.Value,2));
+                Assert.Equal(2m, result.TotalSum.Value, 1);
 
                 db.Remove(result);
                 db.SaveChanges();
@@ -96,8 +92,7 @@ namespace SpaceTest
             {
                 var result = db.Parkings.Where(x => x.Traveller == parking.Traveller).OrderBy(x => x.EndTime).LastOrDefault();
 
-                Assert.Equal(120m, 
-                    result.TotalSum.Value, 1);
+                Assert.Equal(120m, result.TotalSum.Value, 1);
 
                 db.Remove(result);
                 db.SaveChanges();
@@ -127,8 +122,7 @@ namespace SpaceTest
             {
                 var result = db.Parkings.Where(x => x.Traveller == parking.Traveller).OrderBy(x => x.EndTime).LastOrDefault();
 
-                Assert.Equal(3000m, 
-                    result.TotalSum.Value, 1);
+                Assert.Equal(3000m, result.TotalSum.Value, 1);
 
                 db.Remove(result);
                 db.SaveChanges();

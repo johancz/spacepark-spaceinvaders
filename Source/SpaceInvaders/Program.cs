@@ -14,7 +14,7 @@ namespace SpaceInvaders
     class Program
     {
         private const double maxLengthToParkStarship = 35;
-        const int totalParkingLots = 5;
+        private const int totalParkingLots = 5;
 
         static async Task Main(string[] args)
         {
@@ -34,9 +34,8 @@ namespace SpaceInvaders
                 });
                 Console.Clear();
 
-                if (selectedMenu == 0)
+                if (selectedMenu == 0) // menu option: Register new traveller
                 {
-
                     var selectedPerson = ChoosePerson("Who are you traveller?").Result;
 
                     if (selectedPerson == null)
@@ -47,7 +46,7 @@ namespace SpaceInvaders
                     // If the person is already parked, go back to the start menu
                     if (DatabaseQueries.CheckParking(selectedPerson.Name) != null)
                     {
-                        Console.WriteLine($"\nThere is already an active parking registered on {selectedPerson.Name}\nPress any key to continue...");
+                        Console.WriteLine($"\nThere is already an active parking registered on {selectedPerson.Name}\n\nPress any key to continue...");
                         Console.ReadKey();
                         Console.Clear();
                         continue; // Go back to the start menu.
@@ -100,13 +99,14 @@ namespace SpaceInvaders
                         else
                         {
                             Console.ForegroundColor = ConsoleColor.Red;
-                            Console.WriteLine($"We're sorry but your {selectedShip.Name} is too big ({selectedShip.Length}m) for our parking lots. (Maximum length: 30m)");
+                            Console.WriteLine($"We're sorry but your {selectedShip.Name} is too big ({selectedShip.Length}m) for our parking lots. (Maximum length: 35m)");
                             Console.ResetColor();
                         }
                     }
                     Console.WriteLine();
                 }
-                else if (selectedMenu == 1)
+
+                else if (selectedMenu == 1) // menu option: End current parking
                 {
                     var selectedPerson = ChoosePerson("Who is leaving our beautiful parking station?").Result;
 
@@ -118,28 +118,27 @@ namespace SpaceInvaders
                     //If there is a active parking, see method CheckParking, then print InVoice.
                     if (DatabaseQueries.CheckParking(selectedPerson.Name) != null)
                     {
+                        Console.Clear();
                         DatabaseQueries.EndParking(selectedPerson);
-                        Console.WriteLine("Press any key..");
+                        Console.WriteLine("Thank you for choosing SpacePark! We hope to see you soon again :)\n");
+                        Console.WriteLine("Press any key to return to the main menu...");
                         Console.ReadKey();
-                        Console.WriteLine("\nThank you for choosing SpacePark! We hope to see you soon again :)\n");
-                        Console.WriteLine("Returning to main menu..");
-                        Thread.Sleep(4000);
                         Console.Clear();
                     }
                     else
                     {
+                        Console.Clear();
                         Console.WriteLine("There is no current parking under the name: " + selectedPerson.Name + "\n");
-                        Console.WriteLine("Returning to main menu..");
-                        Thread.Sleep(3000);
+                        Console.WriteLine("Press any key to return to the main menu...");
+                        Console.ReadKey();
                         Console.Clear();
                     }
                 }
-
-                else
+                else // menu option: Exit program
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Terminating program.");
-                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.ResetColor();
                     break;
                 }
             }
@@ -174,8 +173,8 @@ namespace SpaceInvaders
             {
                 Console.Clear();
                 selectedMenuPerson = Menu.Options("Please select ", peopleList.Select(p => p.Name).ToArray());
+                Console.WriteLine("\nLoading..");
             }
-
             return peopleList[selectedMenuPerson];
         }
     }
