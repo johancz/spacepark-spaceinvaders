@@ -36,7 +36,6 @@ namespace SpaceInvaders
 
                 if (selectedMenu == 0) // menu option: Register new traveller
                 {
-
                     var selectedPerson = ChoosePerson("Who are you traveller?").Result;
 
                     if (selectedPerson == null)
@@ -106,6 +105,7 @@ namespace SpaceInvaders
                     }
                     Console.WriteLine();
                 }
+
                 else if (selectedMenu == 1) // menu option: End current parking
                 {
                     var selectedPerson = ChoosePerson("Who is leaving our beautiful parking station?").Result;
@@ -172,7 +172,6 @@ namespace SpaceInvaders
                 Console.Clear();
                 selectedMenuPerson = Menu.Options("Please select ", peopleList.Select(p => p.Name).ToArray());
             }
-
             return peopleList[selectedMenuPerson];
         }
     }
