@@ -46,7 +46,7 @@ namespace SpaceInvaders
                     // If the person is already parked, go back to the start menu
                     if (DatabaseQueries.CheckParking(selectedPerson.Name) != null)
                     {
-                        Console.WriteLine($"\nThere is already an active parking registered on {selectedPerson.Name}\nPress any key to continue...");
+                        Console.WriteLine($"\nThere is already an active parking registered on {selectedPerson.Name}\n\nPress any key to continue...");
                         Console.ReadKey();
                         Console.Clear();
                         continue; // Go back to the start menu.
@@ -118,14 +118,16 @@ namespace SpaceInvaders
                     //If there is a active parking, see method CheckParking, then print InVoice.
                     if (DatabaseQueries.CheckParking(selectedPerson.Name) != null)
                     {
+                        Console.Clear();
                         DatabaseQueries.EndParking(selectedPerson);
-                        Console.WriteLine("\nThank you for choosing SpacePark! We hope to see you soon again :)\n");
+                        Console.WriteLine("Thank you for choosing SpacePark! We hope to see you soon again :)\n");
                         Console.WriteLine("Press any key to return to the main menu...");
                         Console.ReadKey();
                         Console.Clear();
                     }
                     else
                     {
+                        Console.Clear();
                         Console.WriteLine("There is no current parking under the name: " + selectedPerson.Name + "\n");
                         Console.WriteLine("Press any key to return to the main menu...");
                         Console.ReadKey();
@@ -171,6 +173,7 @@ namespace SpaceInvaders
             {
                 Console.Clear();
                 selectedMenuPerson = Menu.Options("Please select ", peopleList.Select(p => p.Name).ToArray());
+                Console.WriteLine("\nLoading..");
             }
             return peopleList[selectedMenuPerson];
         }
