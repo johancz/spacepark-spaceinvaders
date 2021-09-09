@@ -1,4 +1,8 @@
-name: .NET
+name: .NET Continuous Integration (CI) pipeline for building and testing
+
+defaults:
+  run:
+    working-directory: ./Source
 
 on:
   push:
