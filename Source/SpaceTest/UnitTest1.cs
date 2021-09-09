@@ -39,116 +39,116 @@ namespace SpaceTest
             Assert.Equal(2, personalShips.Count);
         }
 
-        [Fact]
-        public void When_Inserting_ParkingData_In_Database_Expect_AnakinSkywalker_ParkingPrice_1min()
-        {
-             var parking = new Parking()
-            {
-                Traveller = "Anakin Skywalker",
-                StarShip = "Naboo fighter",
-                StartTime = DateTime.Now.AddMinutes(-1)
-            };
-            var person = Fetch.People("Anakin");
+        //[Fact]
+        //public void When_Inserting_ParkingData_In_Database_Expect_AnakinSkywalker_ParkingPrice_1min()
+        //{
+        //     var parking = new Parking()
+        //    {
+        //        Traveller = "Anakin Skywalker",
+        //        StarShip = "Naboo fighter",
+        //        StartTime = DateTime.Now.AddMinutes(-1)
+        //    };
+        //    var person = Fetch.People("Anakin");
 
-            using (var db = new MyContext())
-            {
-                db.Parkings.Add(parking);
-                db.SaveChanges();
-            }
+        //    using (var db = new MyContext())
+        //    {
+        //        db.Parkings.Add(parking);
+        //        db.SaveChanges();
+        //    }
 
-            DatabaseQueries.EndParking(person.Result.SingleOrDefault());
+        //    DatabaseQueries.EndParking(person.Result.SingleOrDefault());
 
-            using (var db = new MyContext())
-            {
-                var result = db.Parkings.Where(x => x.Traveller == parking.Traveller).OrderBy(x => x.EndTime).LastOrDefault();
+        //    using (var db = new MyContext())
+        //    {
+        //        var result = db.Parkings.Where(x => x.Traveller == parking.Traveller).OrderBy(x => x.EndTime).LastOrDefault();
 
-                Assert.Equal(2m, result.TotalSum.Value, 1);
+        //        Assert.Equal(2m, result.TotalSum.Value, 1);
 
-                db.Remove(result);
-                db.SaveChanges();
-            }
-        }
+        //        db.Remove(result);
+        //        db.SaveChanges();
+        //    }
+        //}
 
-        [Fact]
-        public void When_Inserting_ParkingData_In_Database_Expect_AnakinSkywalker_ParkingPrice_1h()
-        {
-            var parking = new Parking()
-            {
-                Traveller = "Anakin Skywalker",
-                StarShip = "Naboo fighter",
-                StartTime = DateTime.Now.AddHours(-1)
-            };
-            var person = Fetch.People("Anakin");
+        //[Fact]
+        //public void When_Inserting_ParkingData_In_Database_Expect_AnakinSkywalker_ParkingPrice_1h()
+        //{
+        //    var parking = new Parking()
+        //    {
+        //        Traveller = "Anakin Skywalker",
+        //        StarShip = "Naboo fighter",
+        //        StartTime = DateTime.Now.AddHours(-1)
+        //    };
+        //    var person = Fetch.People("Anakin");
 
-            using (var db = new MyContext())
-            {
-                db.Parkings.Add(parking);
-                db.SaveChanges();
-            }
+        //    using (var db = new MyContext())
+        //    {
+        //        db.Parkings.Add(parking);
+        //        db.SaveChanges();
+        //    }
 
-            DatabaseQueries.EndParking(person.Result.SingleOrDefault());
+        //    DatabaseQueries.EndParking(person.Result.SingleOrDefault());
 
-            using (var db = new MyContext())
-            {
-                var result = db.Parkings.Where(x => x.Traveller == parking.Traveller).OrderBy(x => x.EndTime).LastOrDefault();
+        //    using (var db = new MyContext())
+        //    {
+        //        var result = db.Parkings.Where(x => x.Traveller == parking.Traveller).OrderBy(x => x.EndTime).LastOrDefault();
 
-                Assert.Equal(120m, result.TotalSum.Value, 1);
+        //        Assert.Equal(120m, result.TotalSum.Value, 1);
 
-                db.Remove(result);
-                db.SaveChanges();
-            }
-        }
+        //        db.Remove(result);
+        //        db.SaveChanges();
+        //    }
+        //}
 
-        [Fact]
-        public void When_Inserting_ParkingData_In_Database_Expect_AnakinSkywalker_ParkingPrice_1day1h()
-        {
-            var parking = new Parking()
-            {
-                Traveller = "Anakin Skywalker",
-                StarShip = "Naboo fighter",
-                StartTime = DateTime.Now.AddDays(-1).AddHours(-1)
-            };
-            var person = Fetch.People("Anakin");
+        //[Fact]
+        //public void When_Inserting_ParkingData_In_Database_Expect_AnakinSkywalker_ParkingPrice_1day1h()
+        //{
+        //    var parking = new Parking()
+        //    {
+        //        Traveller = "Anakin Skywalker",
+        //        StarShip = "Naboo fighter",
+        //        StartTime = DateTime.Now.AddDays(-1).AddHours(-1)
+        //    };
+        //    var person = Fetch.People("Anakin");
 
-            using (var db = new MyContext())
-            {
-                db.Parkings.Add(parking);
-                db.SaveChanges();
-            }
+        //    using (var db = new MyContext())
+        //    {
+        //        db.Parkings.Add(parking);
+        //        db.SaveChanges();
+        //    }
 
-            DatabaseQueries.EndParking(person.Result.SingleOrDefault());
+        //    DatabaseQueries.EndParking(person.Result.SingleOrDefault());
 
-            using (var db = new MyContext())
-            {
-                var result = db.Parkings.Where(x => x.Traveller == parking.Traveller).OrderBy(x => x.EndTime).LastOrDefault();
+        //    using (var db = new MyContext())
+        //    {
+        //        var result = db.Parkings.Where(x => x.Traveller == parking.Traveller).OrderBy(x => x.EndTime).LastOrDefault();
 
-                Assert.Equal(3000m, result.TotalSum.Value, 1);
+        //        Assert.Equal(3000m, result.TotalSum.Value, 1);
 
-                db.Remove(result);
-                db.SaveChanges();
-            }
-        }
+        //        db.Remove(result);
+        //        db.SaveChanges();
+        //    }
+        //}
 
 
-        [Fact]
-        public void When_Inserting_ParkingData_In_Database_Expect_LukeSkywalker_Starttime()
-        {
-            using (var db = new MyContext())
-            {
-                var parking = new Parking()
-                {
-                    Traveller = "Anakin Skywalker",
-                    StarShip = "X-wing",
-                };
+        //[Fact]
+        //public void When_Inserting_ParkingData_In_Database_Expect_LukeSkywalker_Starttime()
+        //{
+        //    using (var db = new MyContext())
+        //    {
+        //        var parking = new Parking()
+        //        {
+        //            Traveller = "Anakin Skywalker",
+        //            StarShip = "X-wing",
+        //        };
 
-                db.Parkings.Add(parking);
-                db.SaveChanges();
+        //        db.Parkings.Add(parking);
+        //        db.SaveChanges();
 
-                Assert.Equal(DateTime.Now.ToString(), parking.StartTime.ToString());
+        //        Assert.Equal(DateTime.Now.ToString(), parking.StartTime.ToString());
 
-                db.Remove(parking);
-                db.SaveChanges();
-            }
-        }
+        //        db.Remove(parking);
+        //        db.SaveChanges();
+        //    }
+        //}
     }
 }
